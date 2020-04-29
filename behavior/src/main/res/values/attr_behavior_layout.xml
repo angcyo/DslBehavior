@@ -43,4 +43,8 @@
         <attr name="layout_exclude_title_bar_height" format="boolean" />
         <attr name="layout_offset_title_bar_height" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="LinkageTitleLineBehavior_Layout">
+        <attr name="layout_title_line_show_threshold" format="float" />
+    </declare-styleable>
 </resources>

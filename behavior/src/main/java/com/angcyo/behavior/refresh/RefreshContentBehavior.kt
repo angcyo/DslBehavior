@@ -118,7 +118,8 @@ open class RefreshContentBehavior(
         child: View,
         dependency: View
     ): Boolean {
-        dependency.behavior()?.let {
+        val behavior = dependency.behavior()
+        behavior?.let {
             if (it is ITitleBarBehavior) {
                 titleBarPlaceholderBehavior = it
             }
@@ -127,7 +128,7 @@ open class RefreshContentBehavior(
             }
         }
         super.layoutDependsOn(parent, child, dependency)
-        return enableDependsOn && dependency.behavior() is ITitleBarBehavior
+        return offsetTitleBarHeight && enableDependsOn && behavior is ITitleBarBehavior
     }
 
     override fun onDependentViewChanged(

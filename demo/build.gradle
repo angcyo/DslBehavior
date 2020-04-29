@@ -7,6 +7,8 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+
         applicationId "com.angcyo.behavior.demo"
         minSdkVersion 16
         targetSdkVersion 29
@@ -37,5 +39,5 @@ dependencies {
 
     implementation project(":behavior")
     implementation 'com.github.angcyo:DslFragment:1.0.1'
-    implementation 'com.github.angcyo:DslItem:1.0.3'
+    implementation 'com.github.angcyo:DslItem:1.0.4'
 }

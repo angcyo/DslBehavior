@@ -22,6 +22,19 @@ open class LinkageTitleLineBehavior(
 
     var _titleBarView: View? = null
 
+    init {
+        val array =
+            context.obtainStyledAttributes(
+                attributeSet,
+                R.styleable.LinkageTitleLineBehavior_Layout
+            )
+        titleLineShowThreshold = array.getFloat(
+            R.styleable.LinkageTitleLineBehavior_Layout_layout_title_line_show_threshold,
+            titleLineShowThreshold
+        )
+        array.recycle()
+    }
+
     override fun layoutDependsOn(
         parent: CoordinatorLayout,
         child: View,

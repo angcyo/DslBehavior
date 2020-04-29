@@ -2,9 +2,13 @@ package com.angcyo.behavior.demo
 
 import com.angcyo.base.dslFHelper
 import com.angcyo.behavior.demo.dslitem.AppTextItem
+import com.angcyo.behavior.demo.fragment.GradientTitleFragment
 import com.angcyo.behavior.demo.fragment.RefreshEffectFragment
 import com.angcyo.behavior.demo.fragment.RefreshFragment
+import com.angcyo.behavior.demo.fragment.TitleLineFragment
 import com.angcyo.dsladapter.DslAdapter
+import com.angcyo.dsladapter.dpi
+import com.angcyo.item.DslBottomItem
 
 /**
  *
@@ -31,6 +35,29 @@ class MainFragment : BaseDslFragment() {
                     show(RefreshFragment::class.java)
                 }
             }
+        }
+
+        AppTextItem()() {
+            itemText = "智能阴影演示"
+            itemClick = {
+                dslFHelper {
+                    show(TitleLineFragment::class.java)
+                }
+            }
+        }
+
+        AppTextItem()() {
+            itemText = "标题栏渐变+智能阴影演示"
+            itemClick = {
+                dslFHelper {
+                    show(GradientTitleFragment::class.java)
+                }
+            }
+        }
+
+        DslBottomItem()() {
+            itemText = "演示的数据随机生成, 如果数据量不足以触发滚动时, 请重新打开试试."
+            itemPaddingBottom = 60 * dpi
         }
     }
 }

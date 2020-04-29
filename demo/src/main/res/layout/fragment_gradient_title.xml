@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.angcyo.widget.layout.RCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_primary_color"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="true"
+        android:scrollbarSize="5dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@drawable/scroll_bar_thumb_shape"
+        android:scrollbars="vertical"
+        app:layout_behavior="com.angcyo.behavior.refresh.RefreshContentBehavior"
+        app:layout_exclude_title_bar_height="false"
+        tools:context=".MainActivity" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.angcyo.behavior.linkage.LinkageGradientTitleBehavior">
+
+        <include layout="@layout/layout_title_bar" />
+
+    </FrameLayout>
+
+    <!--根据内容滚动, 智能隐藏和显示-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_hdpi"
+        android:background="@drawable/title_bar_shadow"
+        app:layout_behavior="com.angcyo.behavior.linkage.LinkageTitleLineBehavior" />
+
+</com.angcyo.widget.layout.RCoordinatorLayout>

@@ -33,6 +33,10 @@ abstract class BaseDslFragment : AbsLifecycleFragment() {
         }
     }
 
+    fun setTitle(title: CharSequence?) {
+        view?.findViewById<Toolbar>(R.id.toolbar)?.title = title
+    }
+
     open fun DslAdapter.renderDslAdapter() {
         loadTextItem()
         updateNow()

@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ItemStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">@dimen/lib_min_item_height</item>
+        <item name="android:minHeight">@dimen/lib_min_item_height</item>
+        <item name="android:padding">@dimen/lib_hdpi</item>
+        <item name="android:background">@drawable/lib_bg2_selector</item>
+    </style>
+
 </resources>
