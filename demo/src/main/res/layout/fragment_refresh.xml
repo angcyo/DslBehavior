@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.angcyo.widget.layout.RCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_primary_color"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/refresh_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_behavior=".behavior.TextRefreshHeaderBehavior">
+
+        <include layout="@layout/layout_text_refresh" />
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="true"
+        android:scrollbarSize="5dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@drawable/scroll_bar_thumb_shape"
+        android:scrollbars="vertical"
+        tools:context=".MainActivity"
+        tools:layout_behavior="com.angcyo.behavior.refresh.RefreshContentBehavior" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lib_white"
+        android:paddingTop="@dimen/status_bar_height"
+        android:paddingBottom="@dimen/lib_xhdpi"
+        tools:layout_behavior="com.angcyo.behavior.HideTitleBarBehavior" />
+
+</com.angcyo.widget.layout.RCoordinatorLayout>

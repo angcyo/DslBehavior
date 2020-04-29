@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.angcyo.widget.layout.RCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_primary_color"
+    android:orientation="vertical">
+
+    <!--布局的顺序结构, 只会影响界面上可见层级的结构, 并不会影响Behavior行为-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="true"
+        android:scrollbarSize="5dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@drawable/scroll_bar_thumb_shape"
+        android:scrollbars="vertical"
+        app:layout_behavior="com.angcyo.behavior.refresh.RefreshContentBehavior"
+        tools:context=".MainActivity" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/status_bar_height"
+        android:paddingBottom="@dimen/lib_xhdpi"
+        app:layout_behavior="com.angcyo.behavior.HideTitleBarBehavior" />
+
+</com.angcyo.widget.layout.RCoordinatorLayout>

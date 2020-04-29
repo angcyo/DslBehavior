@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BaseScrollBehavior_Layout">
+        <attr name="layout_scroll_duration" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="LinkageHeaderBehavior_Layout">
+        <attr name="layout_fix_title_bar" format="boolean" />
+        <attr name="layout_fix_status_bar" format="boolean" />
+        <attr name="layout_scroll_top_offset" format="dimension" />
+        <attr name="layout_enable_top_over_scroll" format="boolean" />
+        <attr name="layout_enable_bottom_over_scroll" format="boolean" />
+        <attr name="layout_over_scroll_effect_factor" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="LinkageScaleBehavior_Layout">
+        <attr name="layout_enable_height_effect" format="boolean" />
+        <attr name="layout_enable_scale_effect" format="boolean" />
+        <attr name="layout_scale_max_height" format="dimension" />
+        <attr name="layout_scale_factor" format="float" />
+        <attr name="layout_max_scale" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="LinkageGradientTitleBehavior_Layout">
+        <attr name="layout_title_text_id" format="reference" />
+        <attr name="layout_title_back_id" format="reference" />
+
+        <attr name="layout_background_color_from" format="color" />
+        <attr name="layout_background_color_to" format="color" />
+
+        <attr name="layout_title_text_color_from" format="color" />
+        <attr name="layout_title_text_color_to" format="color" />
+
+        <attr name="layout_back_icon_color_from" format="color" />
+        <attr name="layout_back_icon_color_to" format="color" />
+
+        <attr name="layout_icon_color_from" format="color" />
+        <attr name="layout_icon_color_to" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="RefreshContentBehavior_Layout">
+        <attr name="layout_exclude_title_bar_height" format="boolean" />
+        <attr name="layout_offset_title_bar_height" format="boolean" />
+    </declare-styleable>
+</resources>

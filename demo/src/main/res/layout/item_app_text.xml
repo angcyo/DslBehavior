@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lib_item_root_layout"
+    android:layout_width="match_parent"
+    android:background="@color/lib_white"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:background="@drawable/lib_bg_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/dsl_text_item" />
+
+    </FrameLayout>
+
+</FrameLayout>

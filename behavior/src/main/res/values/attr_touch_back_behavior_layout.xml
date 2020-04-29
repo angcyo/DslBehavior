@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TouchBackBehavior_Layout">
+        <attr name="layout_touch_back_slop" format="dimension" />
+        <attr name="layout_default_scroll_offset_y" format="dimension" />
+    </declare-styleable>
+</resources>
