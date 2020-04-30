@@ -9,13 +9,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fadeScrollbars="true"
-        android:scrollbarSize="5dp"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbarThumbVertical="@drawable/scroll_bar_thumb_shape"
-        android:scrollbars="vertical"
+        style="@style/RvStyle"
         app:layout_behavior="com.angcyo.behavior.refresh.RefreshContentBehavior"
         app:layout_exclude_title_bar_height="false"
         tools:context=".MainActivity" />

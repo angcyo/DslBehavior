@@ -134,7 +134,7 @@ class LinkageHeaderBehavior(
         )
         array.recycle()
 
-        onBehaviorScrollTo = { x, y ->
+        behaviorScrollTo = { x, y ->
             //L.w("scrollTo:$y")
             if (enableRefresh) {
                 //激活了下拉刷新

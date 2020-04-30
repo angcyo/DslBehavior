@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.math.MathUtils.clamp
 import androidx.core.view.ViewCompat
 import com.angcyo.behavior.IScrollBehaviorListener
 import com.angcyo.behavior.behavior
@@ -25,9 +24,8 @@ abstract class BaseLinkageGradientBehavior(
 ) : BaseLinkageBehavior(context, attributeSet), IScrollBehaviorListener {
 
     init {
-        onBehaviorScrollTo = { _, y ->
-            val percent = -y * 1f / getMaxGradientHeight()
-            onGradient(clamp(percent, 0f, 1f))
+        behaviorScrollTo = { _, _ ->
+            //no op
         }
     }
 
@@ -43,6 +41,12 @@ abstract class BaseLinkageGradientBehavior(
             }
         }
         return false
+    }
+
+    override fun onScrollTo(x: Int, y: Int) {
+        //向下滚动是正值
+        val percent = y * 1f / getMaxGradientHeight()
+        onGradient(percent)
     }
 
     override fun onBehaviorScrollTo(x: Int, y: Int) {
@@ -102,9 +106,9 @@ abstract class BaseLinkageGradientBehavior(
                     //非OverScroll
                     _gestureScrollY -= dyConsumed
                     scrollTo(0, _gestureScrollY)
-                } else if (dyUnconsumed < 0) {
-                    //顶部到底了, 重置滚动状态
-                    _gestureScrollY = 0
+                } else {
+                    //OverScroll
+                    _gestureScrollY -= dyUnconsumed
                     scrollTo(0, _gestureScrollY)
                 }
             }

@@ -49,7 +49,7 @@ open class ScaleBehavior(
 
     init {
         showLog = false
-        onBehaviorScrollTo = { x, y ->
+        behaviorScrollTo = { x, y ->
             //L.i("->$y $_scale")
             if (enableScaleEffect) {
                 _targetView?.apply {

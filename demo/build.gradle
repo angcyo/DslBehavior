@@ -39,5 +39,6 @@ dependencies {
 
     implementation project(":behavior")
     implementation 'com.github.angcyo:DslFragment:1.0.1'
-    implementation 'com.github.angcyo:DslItem:1.0.4'
+    implementation 'com.github.angcyo:DslItem:1.0.5'
+    implementation 'com.github.angcyo:DslTablayout:1.5.3'
 }

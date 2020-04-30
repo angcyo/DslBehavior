@@ -3,43 +3,47 @@ package com.angcyo.behavior.demo
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.angcyo.behavior.demo.dslitem.AppTextItem
 import com.angcyo.dsladapter.DslAdapter
 import com.angcyo.dsladapter.initDslAdapter
 import com.angcyo.dsladapter.updateNow
 import com.angcyo.fragment.AbsLifecycleFragment
+import com.angcyo.tablayout.delegate.ViewPager1Delegate
 
 /**
  *
  * Email:angcyo@126.com
  * @author angcyo
- * @date 2020/04/28
+ * @date 2020/04/30
  * Copyright (c) 2020 ShenZhen Wayto Ltd. All rights reserved.
  */
-abstract class BaseDslFragment : AbsLifecycleFragment() {
-
-    lateinit var dslAdapter: DslAdapter
-
-    init {
-        fragmentLayoutId = R.layout.fragment_dsl
-    }
+abstract class BaseVpFragment : AbsLifecycleFragment() {
 
     override fun initBaseView(rootView: View, savedInstanceState: Bundle?) {
         super.initBaseView(rootView, savedInstanceState)
-        rootView.findViewById<Toolbar>(R.id.toolbar)?.title = this::class.java.simpleName
-        rootView.findViewById<RecyclerView>(R.id.recycler_view)?.initDslAdapter {
-            dslAdapter = this
-            renderDslAdapter()
+        rootView.findViewById<RecyclerView>(R.id.header_recycler_view)?.initDslAdapter {
+            renderHeaderAdapter()
+        }
+
+        rootView.findViewById<ViewPager>(R.id.view_pager)?.apply {
+            adapter = RFragmentAdapter(
+                childFragmentManager,
+                listOf(
+                    RecyclerFragment(),
+                    RecyclerFragment(),
+                    RecyclerFragment(),
+                    RecyclerFragment(),
+                    RecyclerFragment(),
+                    RecyclerFragment()
+                )
+            )
+            ViewPager1Delegate.install(this, rootView.findViewById(R.id.tab_layout))
         }
     }
 
-    fun setTitle(title: CharSequence?) {
-        view?.findViewById<Toolbar>(R.id.toolbar)?.title = title
-    }
-
-    open fun DslAdapter.renderDslAdapter() {
+    open fun DslAdapter.renderHeaderAdapter() {
         AppTextItem()() {
             itemText = "列表顶部"
             configTextStyle {

@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.math.MathUtils.clamp
 import com.angcyo.behavior.*
 
 /**
@@ -114,19 +115,21 @@ open class LinkageGradientTitleBehavior(
 
     /**开始渐变*/
     override fun onGradient(percent: Float) {
+        val fraction = if (percent > 0) 0f else clamp(-percent, 0f, 1f)
+
         //背景
         childView?.apply {
             if (background == null || background is ColorDrawable) {
                 setBackgroundColor(
                     evaluateColor(
-                        percent,
+                        fraction,
                         backgroundColorFrom,
                         backgroundColorTo
                     )
                 )
             } else {
                 background?.apply {
-                    alpha = (255 * percent).toInt()
+                    alpha = (255 * fraction).toInt()
                 }
             }
         }
@@ -138,7 +141,7 @@ open class LinkageGradientTitleBehavior(
                     is TextView -> if (it.id == titleTextId) {
                         it.setTextColor(
                             evaluateColor(
-                                percent,
+                                fraction,
                                 titleTextColorFrom,
                                 titleTextColorTo
                             )
@@ -149,7 +152,7 @@ open class LinkageGradientTitleBehavior(
                         it.setImageDrawable(
                             it.drawable?.colorFilter(
                                 evaluateColor(
-                                    percent,
+                                    fraction,
                                     backIconColorFrom,
                                     backIconColorTo
                                 )
@@ -159,7 +162,7 @@ open class LinkageGradientTitleBehavior(
                         it.setImageDrawable(
                             it.drawable?.colorFilter(
                                 evaluateColor(
-                                    percent,
+                                    fraction,
                                     iconColorFrom,
                                     iconColorTo
                                 )

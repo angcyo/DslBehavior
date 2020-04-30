@@ -325,6 +325,24 @@ fun View?.getLastVelocity(): Float {
     return currVelocity
 }
 
+/**
+ * 获取[RecyclerView] [Fling] 时的速率
+ * */
+fun RecyclerView?.getLastVelocity(): Float {
+    var currVelocity = 0f
+    try {
+        val mViewFlinger = this.getMember(RecyclerView::class.java, "mViewFlinger")
+        var mScroller = mViewFlinger.getMember("mScroller")
+        if (mScroller == null) {
+            mScroller = mViewFlinger.getMember("mOverScroller")
+        }
+        currVelocity = mScroller.getCurrVelocity()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return currVelocity
+}
+
 fun Any?.getCurrVelocity(): Float {
     return when (this) {
         is OverScroller -> currVelocity

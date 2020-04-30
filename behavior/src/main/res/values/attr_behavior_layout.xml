@@ -20,6 +20,8 @@
         <attr name="layout_scale_max_height" format="dimension" />
         <attr name="layout_scale_factor" format="float" />
         <attr name="layout_max_scale" format="float" />
+        <attr name="layout_scale_threshold" format="float" />
+        <attr name="layout_scale_view_id" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="LinkageGradientTitleBehavior_Layout">

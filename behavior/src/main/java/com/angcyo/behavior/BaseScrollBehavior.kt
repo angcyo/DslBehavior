@@ -35,13 +35,13 @@ abstract class BaseScrollBehavior<T : View>(
     var behaviorOffsetTop = 0
         set(value) {
             field = value
-            onBehaviorScrollTo(behaviorScrollX, behaviorScrollY)
+            behaviorScrollTo(behaviorScrollX, behaviorScrollY)
         }
 
     var behaviorOffsetLeft = 0
         set(value) {
             field = value
-            onBehaviorScrollTo(behaviorScrollX, behaviorScrollY)
+            behaviorScrollTo(behaviorScrollX, behaviorScrollY)
         }
 
     //fling 速率阈值
@@ -53,7 +53,7 @@ abstract class BaseScrollBehavior<T : View>(
     var behaviorScrollY: Int = 0
 
     /**滚动值响应界面的处理*/
-    var onBehaviorScrollTo: (x: Int, y: Int) -> Unit = { x, y ->
+    var behaviorScrollTo: (x: Int, y: Int) -> Unit = { x, y ->
         childView?.offsetLeftTo(x + behaviorOffsetLeft)
         childView?.offsetTopTo(y + behaviorOffsetTop)
     }
@@ -151,10 +151,15 @@ abstract class BaseScrollBehavior<T : View>(
         if (showLog) {
             Log.v(this::class.java.simpleName, "scrollTo: x:$x y:$y")
         }
-        onBehaviorScrollTo(x, y)
+        behaviorScrollTo(x, y)
+        onScrollTo(x, y)
         listeners.forEach {
             it.onBehaviorScrollTo(x, y)
         }
+    }
+
+    open fun onScrollTo(x: Int, y: Int) {
+
     }
 
     /**滚动多少*/

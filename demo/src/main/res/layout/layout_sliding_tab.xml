@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.angcyo.tablayout.DslTabLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tab_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="#666466"
+    app:tab_indicator_gradient_end_color="@color/colorPrimaryDark"
+    app:tab_indicator_gradient_start_color="@color/colorPrimary">
+
+    <TextView
+        style="@style/TabItemStyle"
+        android:text="R" />
+
+    <TextView
+        style="@style/TabItemStyle"
+        android:text="最新" />
+
+    <ImageView
+        style="@style/TabItemStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <TextView
+        style="@style/TabItemStyle"
+        android:text="排行榜3" />
+
+    <TextView
+        style="@style/TabItemStyle"
+        android:text="Android" />
+
+    <LinearLayout
+        style="@style/TabItemStyle"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TabItemStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:text="组合" />
+
+        <TextView
+            style="@style/TabItemStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:text="Swift" />
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/TabItemStyle"
+        android:text="Vue" />
+
+    <TextView
+        style="@style/TabItemStyle"
+        android:text="前->端" />
+
+    <TextView
+        style="@style/TabItemStyle"
+        android:text="设" />
+
+    <TextView
+        style="@style/TabItemStyle"
+        android:text="其他资源" />
+
+</com.angcyo.tablayout.DslTabLayout>

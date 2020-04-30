@@ -3,13 +3,12 @@ package com.angcyo.behavior.linkage
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.math.MathUtils.clamp
-import com.angcyo.behavior.IScrollBehaviorListener
 import com.angcyo.behavior.R
-import com.angcyo.behavior.behavior
 import com.angcyo.behavior.mH
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * 背景放大缩小的行为. 配合[LinkageHeaderBehavior]使用
@@ -21,7 +20,7 @@ import com.angcyo.behavior.mH
 open class LinkageScaleBehavior(
     context: Context,
     attributeSet: AttributeSet? = null
-) : BaseLinkageBehavior(context, attributeSet), IScrollBehaviorListener {
+) : BaseLinkageGradientBehavior(context, attributeSet) {
 
     /**效果作用的目标, 不设置就是 child*/
     var scaleTargetView: View? = null
@@ -31,6 +30,9 @@ open class LinkageScaleBehavior(
 
     /**激活Scale变化*/
     var enableScaleEffect: Boolean = true
+
+    /**当滚动比例(滚动距离/child高度)大于等于此值时, 开始缩放. 需要先激活[enableScaleEffect]*/
+    var scaleThreshold: Float = 0.2f
 
     /**比例计算的分母, -1是child的高度*/
     var scaleMaxHeight: Int = -1
@@ -42,7 +44,7 @@ open class LinkageScaleBehavior(
     var maxScale = 4f
 
     val _maxHeight: Int
-        get() = if (scaleMaxHeight > 0) scaleMaxHeight else childView.mH()
+        get() = if (scaleMaxHeight > 0) scaleMaxHeight else _targetView.mH()
 
     val _targetView: View?
         get() = scaleTargetView ?: childView
@@ -50,17 +52,10 @@ open class LinkageScaleBehavior(
     val _scale: Float
         get() = clamp(1f + behaviorScrollY * 1f / _maxHeight * scaleFactor, 1f, maxScale)
 
+    var _targetViewId: Int = View.NO_ID
+
     init {
         showLog = false
-        onBehaviorScrollTo = { x, y ->
-            //L.i("->$y $_scale")
-            if (enableScaleEffect) {
-                _targetView?.apply {
-                    scaleX = _scale
-                    scaleY = scaleX
-                }
-            }
-        }
 
         val array =
             context.obtainStyledAttributes(attributeSet, R.styleable.LinkageScaleBehavior_Layout)
@@ -85,6 +80,13 @@ open class LinkageScaleBehavior(
             R.styleable.LinkageScaleBehavior_Layout_layout_scale_factor,
             scaleFactor
         )
+        scaleThreshold = array.getFloat(
+            R.styleable.LinkageScaleBehavior_Layout_layout_scale_threshold,
+            scaleThreshold
+        )
+        _targetViewId =
+            array.getResourceId(R.styleable.LinkageScaleBehavior_Layout_layout_scale_view_id, -1)
+
         array.recycle()
     }
 
@@ -94,11 +96,7 @@ open class LinkageScaleBehavior(
         dependency: View
     ): Boolean {
         super.layoutDependsOn(parent, child, dependency)
-        headerView.behavior().apply {
-            if (this is LinkageHeaderBehavior) {
-                this.addScrollListener(this@LinkageScaleBehavior)
-            }
-        }
+        scaleTargetView = child.findViewById(_targetViewId)
         return false
     }
 
@@ -118,40 +116,79 @@ open class LinkageScaleBehavior(
             parentHeightMeasureSpec,
             heightUsed
         )
-        if (enableHeightEffect) {
-            val childHeight =
-                if (child.layoutParams.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                    parent.onMeasureChild(
-                        child,
-                        parentWidthMeasureSpec,
-                        widthUsed,
-                        parentHeightMeasureSpec,
-                        heightUsed
-                    )
-                    child.mH()
-                } else {
-                    child.layoutParams.height
-                }
+        if (enableHeightEffect && _targetDefaultHeight > 0) {
+
+            val childHeight = max(_scale - 1f, 0f) * _targetDefaultHeight + _targetDefaultHeight
+            child.layoutParams.height = childHeight.toInt()
+
             parent.onMeasureChild(
                 child,
                 parentWidthMeasureSpec,
                 widthUsed,
                 parentHeightMeasureSpec,
-                (heightUsed - childHeight * (_scale - 1)).toInt()
+                heightUsed
             )
+
             return true
         } else {
             return false
         }
     }
 
+    //第一次布局后, 保存target的高度, 方便之后恢复. 如果之后手动修改过target的高度, 请同时修改此值
+    var _targetDefaultHeight = -1
+
+    override fun onMeasureChildAfter(
+        parent: CoordinatorLayout,
+        child: View,
+        parentWidthMeasureSpec: Int,
+        widthUsed: Int,
+        parentHeightMeasureSpec: Int,
+        heightUsed: Int
+    ) {
+        super.onMeasureChildAfter(
+            parent,
+            child,
+            parentWidthMeasureSpec,
+            widthUsed,
+            parentHeightMeasureSpec,
+            heightUsed
+        )
+        if (_targetDefaultHeight < 0) {
+            _targetDefaultHeight = _targetView.mH()
+        }
+    }
+
     override fun onBehaviorScrollTo(x: Int, y: Int) {
         if (y >= 0) {
             val oldY = behaviorScrollY
-            scrollTo(0, y)
+            super.onBehaviorScrollTo(x, y)
             if (enableHeightEffect && oldY != y) {
                 _targetView?.apply {
                     requestLayout()
+                }
+            }
+        } else {
+            super.onBehaviorScrollTo(x, y)
+        }
+    }
+
+    override fun getMaxGradientHeight(): Int {
+        return _targetView.mH()
+    }
+
+    override fun onGradient(percent: Float) {
+        //Log.i("angcyo", "" + percent)
+        if (enableScaleEffect) {
+            if (percent >= scaleThreshold) {
+                _targetView?.apply {
+                    scaleX = min(1 + percent - scaleThreshold, maxScale)
+                    scaleY = scaleX
+                }
+            } else {
+                _targetView?.apply {
+                    scaleX = 1f
+                    scaleY = 1f
                 }
             }
         }

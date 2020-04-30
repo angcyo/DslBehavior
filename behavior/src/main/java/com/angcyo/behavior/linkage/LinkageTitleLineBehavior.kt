@@ -75,7 +75,11 @@ open class LinkageTitleLineBehavior(
     override fun onGradient(percent: Float) {
         //GONE后的view, 收不到内嵌滚动事件.所以这里使用INVISIBLE
         if (childView?.isInEditMode == false) {
-            childView?.invisible(percent < titleLineShowThreshold)
+            if (percent > 0) {
+                childView?.invisible(true)
+            } else {
+                childView?.invisible(-percent < titleLineShowThreshold)
+            }
         }
     }
 }

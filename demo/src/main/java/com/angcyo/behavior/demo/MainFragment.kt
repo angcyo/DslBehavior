@@ -1,14 +1,19 @@
 package com.angcyo.behavior.demo
 
+import android.graphics.Color
+import android.os.Bundle
+import android.view.Gravity
+import android.view.View
 import com.angcyo.base.dslFHelper
 import com.angcyo.behavior.demo.dslitem.AppTextItem
-import com.angcyo.behavior.demo.fragment.GradientTitleFragment
-import com.angcyo.behavior.demo.fragment.RefreshEffectFragment
-import com.angcyo.behavior.demo.fragment.RefreshFragment
-import com.angcyo.behavior.demo.fragment.TitleLineFragment
+import com.angcyo.behavior.demo.fragment.*
 import com.angcyo.dsladapter.DslAdapter
 import com.angcyo.dsladapter.dpi
+import com.angcyo.dsladapter.filter.batchLoad
+import com.angcyo.dsladapter.setWidth
+import com.angcyo.item.DslBaseLabelItem
 import com.angcyo.item.DslBottomItem
+import com.angcyo.widget.span.span
 
 /**
  *
@@ -18,9 +23,15 @@ import com.angcyo.item.DslBottomItem
  * Copyright (c) 2020 ShenZhen Wayto Ltd. All rights reserved.
  */
 class MainFragment : BaseDslFragment() {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setTitle("DslBehavior by angcyo")
+    }
+
     override fun DslAdapter.renderDslAdapter() {
         AppTextItem()() {
-            itemText = "刷新效果演示"
+            itemText = "刷新效果演示(上拉/下拉回调)"
             itemClick = {
                 dslFHelper {
                     show(RefreshEffectFragment::class.java)
@@ -55,9 +66,57 @@ class MainFragment : BaseDslFragment() {
             }
         }
 
+        DslBaseLabelItem()() {
+            itemBackgroundDrawable = null
+            itemLabelText = span {
+                append("---------以下高能, 内嵌联动滚动Behavior---------")
+                appendln()
+                append("背景+头部+悬停+底部+标题栏,布局结构de联动行为")
+                appendln()
+                append("头部和底部,均支持`NestedScrollingChild`控件和普通`View`控件") {
+                    foregroundColor = Color.RED
+                }
+            }
+            configLabelTextStyle {
+                textGravity = Gravity.CENTER
+            }
+            itemBindOverride = { itemHolder, _, _, _ ->
+                itemHolder.view(R.id.lib_label_view)?.setWidth(-1)
+            }
+        }
+
+        AppTextItem()() {
+            itemText = "联动->背景放大演示"
+            itemClick = {
+                dslFHelper {
+                    show(BackgroundScaleFragment::class.java)
+                }
+            }
+        }
+
+        AppTextItem()() {
+            itemText = "联动->刷新演示"
+            itemClick = {
+                dslFHelper {
+                    show(GradientTitleFragment::class.java)
+                }
+            }
+        }
+
+        AppTextItem()() {
+            itemText = "联动->标题渐变演示"
+            itemClick = {
+                dslFHelper {
+                    show(GradientTitleFragment::class.java)
+                }
+            }
+        }
+
         DslBottomItem()() {
             itemText = "演示的数据随机生成, 如果数据量不足以触发滚动时, 请重新打开试试."
             itemPaddingBottom = 60 * dpi
         }
+
+        batchLoad(60)
     }
 }

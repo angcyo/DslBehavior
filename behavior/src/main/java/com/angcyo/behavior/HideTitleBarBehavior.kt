@@ -37,7 +37,7 @@ open class HideTitleBarBehavior(
 
     init {
         showLog = false
-        onBehaviorScrollTo = { _, y ->
+        behaviorScrollTo = { _, y ->
             childView?.offsetTopTo(y)
         }
     }

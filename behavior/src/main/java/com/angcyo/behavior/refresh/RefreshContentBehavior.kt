@@ -54,7 +54,7 @@ open class RefreshContentBehavior(
     init {
         showLog = false
 
-        onBehaviorScrollTo = { x, y ->
+        behaviorScrollTo = { x, y ->
             refreshBehaviorConfig?.onContentScrollTo(this, x, y)
         }
 
