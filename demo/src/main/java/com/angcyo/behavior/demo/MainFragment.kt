@@ -98,7 +98,7 @@ class MainFragment : BaseDslFragment() {
             itemText = "联动->刷新演示"
             itemClick = {
                 dslFHelper {
-                    show(GradientTitleFragment::class.java)
+                    show(BackgroundScaleFragment::class.java)
                 }
             }
         }
@@ -107,7 +107,7 @@ class MainFragment : BaseDslFragment() {
             itemText = "联动->标题渐变演示"
             itemClick = {
                 dslFHelper {
-                    show(GradientTitleFragment::class.java)
+                    show(BackgroundScaleFragment::class.java)
                 }
             }
         }
