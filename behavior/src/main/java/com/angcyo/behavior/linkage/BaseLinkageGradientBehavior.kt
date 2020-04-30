@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import com.angcyo.behavior.IScrollBehaviorListener
 import com.angcyo.behavior.behavior
 import com.angcyo.behavior.mH
+import com.angcyo.behavior.topCanScroll
 import kotlin.math.min
 
 /**
@@ -108,11 +109,34 @@ abstract class BaseLinkageGradientBehavior(
                     scrollTo(0, _gestureScrollY)
                 } else {
                     //OverScroll
+                    if (dyUnconsumed < 0) {
+                        //手指向下OverScroll, 此时的_gestureScrollY应该是正值
+                        if (_gestureScrollY < 0) {
+                            _gestureScrollY = 0
+                        }
+                    } else {
+                        //向上OverScroll时, 不清理滚动距离.因为无法恢复.
+                    }
                     _gestureScrollY -= dyUnconsumed
                     scrollTo(0, _gestureScrollY)
                 }
             }
         }
+    }
+
+    override fun onStopNestedScroll(
+        coordinatorLayout: CoordinatorLayout,
+        child: View,
+        target: View,
+        type: Int
+    ) {
+        if (headerScrollView == null) {
+            if (_nestedScrollView != null && !_nestedScrollView.topCanScroll()) {
+                //内嵌滚动结束之后, 如果顶部无法滚动, 重置_gestureScrollY距离
+                _gestureScrollY = 0
+            }
+        }
+        super.onStopNestedScroll(coordinatorLayout, child, target, type)
     }
 
     //LinkageHeaderBehavior回调的是OverScroll值.
