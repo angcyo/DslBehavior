@@ -49,7 +49,9 @@ class TextRefreshHeaderBehavior(context: Context, attributeSet: AttributeSet? = 
     }
 
     override fun onRefreshStatusChange(contentBehavior: BaseScrollBehavior<*>, from: Int, to: Int) {
-        super.onRefreshStatusChange(contentBehavior, from, to)
+        if (to < IRefreshBehavior.STATUS_FINISH) {
+            super.onRefreshStatusChange(contentBehavior, from, to)
+        }
 
         childView?.findViewById<ProgressBar>(R.id.progress_bar)?.apply {
             if (to == IRefreshBehavior.STATUS_REFRESH) {
@@ -65,6 +67,11 @@ class TextRefreshHeaderBehavior(context: Context, attributeSet: AttributeSet? = 
 
                     childView?.findViewById<TextView>(R.id.text_view)?.apply {
                         text = "刷新完成"
+
+                        //延迟关闭刷新状态
+                        postDelayed({
+                            super.onRefreshStatusChange(contentBehavior, from, to)
+                        }, 700)
                     }
 
                     progress = 50

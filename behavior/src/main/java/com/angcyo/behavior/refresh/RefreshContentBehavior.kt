@@ -38,7 +38,7 @@ open class RefreshContentBehavior(
     var offsetTitleBarHeight: Boolean = true
 
     /**刷新行为界面处理*/
-    var refreshBehaviorConfig: IRefreshBehavior? = RefreshEffectConfig()
+    override var refreshBehaviorConfig: IRefreshBehavior? = RefreshEffectConfig()
 
     /**刷新触发的回调*/
     override var refreshAction: (IRefreshContentBehavior) -> Unit =

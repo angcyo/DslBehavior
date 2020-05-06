@@ -32,6 +32,12 @@ class RefreshFragment : BaseDslFragment() {
 
                     //1秒后, 完成刷新
                     rootView.postDelayed({
+
+                        dslAdapter.apply {
+                            clearItems()
+                            renderDslAdapter()
+                        }
+
                         finishRefresh()
                     }, 1000)
                 }

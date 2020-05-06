@@ -85,7 +85,7 @@ class LinkageHeaderBehavior(
     //<editor-fold desc="下拉刷新属性">
 
     /**刷新行为的支持*/
-    var refreshBehaviorConfig: IRefreshBehavior? = null
+    override var refreshBehaviorConfig: IRefreshBehavior? = null
 
     //是否激活了刷新功能
     val enableRefresh: Boolean get() = refreshBehaviorConfig != null

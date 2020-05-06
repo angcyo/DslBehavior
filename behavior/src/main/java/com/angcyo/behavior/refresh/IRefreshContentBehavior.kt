@@ -9,6 +9,9 @@ package com.angcyo.behavior.refresh
 
 interface IRefreshContentBehavior {
 
+    /**刷新行为的支持*/
+    var refreshBehaviorConfig: IRefreshBehavior?
+
     /**触发了刷新回调*/
     var refreshAction: (IRefreshContentBehavior) -> Unit
 
