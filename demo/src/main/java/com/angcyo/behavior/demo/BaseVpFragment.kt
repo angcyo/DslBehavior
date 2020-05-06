@@ -21,9 +21,12 @@ import com.angcyo.tablayout.delegate.ViewPager1Delegate
  */
 abstract class BaseVpFragment : AbsLifecycleFragment() {
 
+    lateinit var headerDslAdapter: DslAdapter
+
     override fun initBaseView(rootView: View, savedInstanceState: Bundle?) {
         super.initBaseView(rootView, savedInstanceState)
         rootView.findViewById<RecyclerView>(R.id.header_recycler_view)?.initDslAdapter {
+            headerDslAdapter = this
             renderHeaderAdapter()
         }
 

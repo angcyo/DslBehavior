@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.angcyo.widget.layout.RCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_primary_color">
+
+    <FrameLayout
+        android:id="@+id/refresh_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior=".behavior.TextRefreshHeaderBehavior">
+
+        <include layout="@layout/layout_text_refresh" />
+    </FrameLayout>
+
+    <!--头部-->
+    <FrameLayout
+        android:id="@+id/header_wrap_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.angcyo.behavior.linkage.LinkageHeaderBehavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/header_recycler_view"
+            style="@style/RvStyle"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <!--悬停-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_behavior="com.angcyo.behavior.linkage.LinkageStickyBehavior">
+
+        <include layout="@layout/layout_sliding_tab" />
+    </FrameLayout>
+
+    <!--底部-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_primary_color"
+        app:layout_behavior="com.angcyo.behavior.linkage.LinkageFooterBehavior">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <!--标题-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lib_white"
+        app:layout_behavior="com.angcyo.behavior.linkage.LinkageGradientTitleBehavior"
+        app:layout_title_text_id="@id/lib_title_text_view">
+
+        <include layout="@layout/layout_title_bar" />
+
+    </FrameLayout>
+
+    <!--阴影线-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_hdpi"
+        android:background="@drawable/title_bar_shadow"
+        app:layout_behavior="com.angcyo.behavior.linkage.LinkageTitleLineBehavior" />
+</com.angcyo.widget.layout.RCoordinatorLayout>

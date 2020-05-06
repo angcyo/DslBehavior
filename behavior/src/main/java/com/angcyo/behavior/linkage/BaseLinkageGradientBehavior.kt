@@ -53,12 +53,8 @@ abstract class BaseLinkageGradientBehavior(
     }
 
     override fun onBehaviorScrollTo(scrollBehavior: BaseScrollBehavior<*>, x: Int, y: Int) {
-        if (scrollBehavior.behaviorScrollY == 0) {
-            //重置滚动距离
-            _gestureScrollY = 0
-        }
         //转发给自己处理
-        if (y > 0) {
+        if (y > 0 && scrollBehavior.childView?.topCanScroll() == false) {
             _gestureScrollY = 0
             scrollTo(x, y)
         } else {
@@ -111,11 +107,10 @@ abstract class BaseLinkageGradientBehavior(
             if (target == headerScrollView || headerScrollView == null) {
                 if (dyUnconsumed == 0) {
                     //非OverScroll
-                    if (dyConsumed > 0) {
-                        _gestureScrollY -= dyConsumed
-                    } else {
+                    if (!target.topCanScroll()) {
                         _gestureScrollY = 0
                     }
+                    _gestureScrollY -= dyConsumed
                     scrollTo(0, _gestureScrollY)
                 } else {
                     //OverScroll
@@ -127,11 +122,7 @@ abstract class BaseLinkageGradientBehavior(
                     } else {
                         //向上OverScroll时, 不清理滚动距离.因为无法恢复.
                     }
-                    if (_contentScrollBehavior?.behaviorScrollY == 0) {
-                        _gestureScrollY = 0
-                    } else {
-                        _gestureScrollY -= dyUnconsumed
-                    }
+                    _gestureScrollY -= dyUnconsumed
                     scrollTo(0, _gestureScrollY)
                 }
             }

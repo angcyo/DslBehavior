@@ -129,7 +129,7 @@ class MainFragment : BaseDslFragment() {
             itemText = "联动->刷新演示"
             itemClick = {
                 dslFHelper {
-                    show(LinkageBackgroundScaleFragment::class.java)
+                    show(LinkageRefreshFragment::class.java)
                 }
             }
         }
