@@ -20,9 +20,9 @@ import com.angcyo.item.getColor
  * Copyright (c) 2020 ShenZhen Wayto Ltd. All rights reserved.
  */
 
-class BackgroundScaleFragment : BaseVpFragment() {
+class LinkageBackgroundScaleFragment : BaseVpFragment() {
     init {
-        fragmentLayoutId = R.layout.fragment_background_scale
+        fragmentLayoutId = R.layout.fragment_linkage_background_scale
     }
 
     override fun DslAdapter.renderHeaderAdapter() {

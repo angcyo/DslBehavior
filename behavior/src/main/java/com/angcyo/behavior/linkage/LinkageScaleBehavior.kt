@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.math.MathUtils.clamp
+import com.angcyo.behavior.BaseScrollBehavior
 import com.angcyo.behavior.R
 import com.angcyo.behavior.mH
 import kotlin.math.max
@@ -159,17 +160,17 @@ open class LinkageScaleBehavior(
         }
     }
 
-    override fun onBehaviorScrollTo(x: Int, y: Int) {
+    override fun onBehaviorScrollTo(scrollBehavior: BaseScrollBehavior<*>, x: Int, y: Int) {
         if (y >= 0) {
             val oldY = behaviorScrollY
-            super.onBehaviorScrollTo(x, y)
+            super.onBehaviorScrollTo(scrollBehavior, x, y)
             if (enableHeightEffect && oldY != y) {
                 _targetView?.apply {
                     requestLayout()
                 }
             }
         } else {
-            super.onBehaviorScrollTo(x, y)
+            super.onBehaviorScrollTo(scrollBehavior, x, y)
         }
     }
 

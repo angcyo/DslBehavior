@@ -19,6 +19,7 @@ import kotlin.math.abs
  * @date 2020/03/21
  * Copyright (c) 2019 ShenZhen O&M Cloud Co., Ltd. All rights reserved.
  */
+@Deprecated("使用[LinkageScaleBehavior]")
 open class ScaleBehavior(
     context: Context,
     attributeSet: AttributeSet? = null

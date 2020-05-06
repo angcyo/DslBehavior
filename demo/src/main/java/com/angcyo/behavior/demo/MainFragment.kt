@@ -66,6 +66,15 @@ class MainFragment : BaseDslFragment() {
             }
         }
 
+        AppTextItem()() {
+            itemText = "标题栏渐变+智能阴影+背景放大演示"
+            itemClick = {
+                dslFHelper {
+                    show(BackgroundFragment::class.java)
+                }
+            }
+        }
+
         DslBaseLabelItem()() {
             itemBackgroundDrawable = null
             itemLabelText = span {
@@ -73,7 +82,11 @@ class MainFragment : BaseDslFragment() {
                 appendln()
                 append("背景+头部+悬停+底部+标题栏,布局结构de联动行为")
                 appendln()
-                append("头部和底部,均支持`NestedScrollingChild`控件和普通`View`控件") {
+                append("头部和底部,均支持`NestedScrollingChild`控件") {
+                    foregroundColor = Color.RED
+                }
+                appendln()
+                append("和普通`View`控件") {
                     foregroundColor = Color.RED
                 }
             }
@@ -89,7 +102,7 @@ class MainFragment : BaseDslFragment() {
             itemText = "联动->背景放大演示"
             itemClick = {
                 dslFHelper {
-                    show(BackgroundScaleFragment::class.java)
+                    show(LinkageBackgroundScaleFragment::class.java)
                 }
             }
         }
@@ -98,7 +111,7 @@ class MainFragment : BaseDslFragment() {
             itemText = "联动->刷新演示"
             itemClick = {
                 dslFHelper {
-                    show(BackgroundScaleFragment::class.java)
+                    show(LinkageBackgroundScaleFragment::class.java)
                 }
             }
         }
@@ -107,7 +120,7 @@ class MainFragment : BaseDslFragment() {
             itemText = "联动->标题渐变演示"
             itemClick = {
                 dslFHelper {
-                    show(BackgroundScaleFragment::class.java)
+                    show(LinkageBackgroundScaleFragment::class.java)
                 }
             }
         }

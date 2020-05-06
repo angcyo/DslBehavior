@@ -11,5 +11,5 @@ package com.angcyo.behavior
 interface IScrollBehaviorListener {
 
     /**[com.angcyo.behavior.BaseScrollBehavior.scrollTo]*/
-    fun onBehaviorScrollTo(x: Int, y: Int)
+    fun onBehaviorScrollTo(scrollBehavior: BaseScrollBehavior<*>, x: Int, y: Int)
 }

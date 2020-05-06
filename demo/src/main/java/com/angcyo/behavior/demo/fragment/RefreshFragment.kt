@@ -27,7 +27,7 @@ class RefreshFragment : BaseDslFragment() {
         super.initBaseView(rootView, savedInstanceState)
         rootView.findViewById<View>(R.id.recycler_view)
             ?.setBehavior(RefreshContentBehavior(fContext()).apply {
-                onRefreshAction = {
+                refreshAction = {
                     Toast.makeText(fContext(), "正在刷新...", Toast.LENGTH_SHORT).show()
 
                     //1秒后, 完成刷新

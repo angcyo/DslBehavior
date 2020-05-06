@@ -10,7 +10,7 @@ package com.angcyo.behavior.refresh
 interface IRefreshContentBehavior {
 
     /**触发了刷新回调*/
-    var onRefreshAction: (IRefreshContentBehavior) -> Unit
+    var refreshAction: (IRefreshContentBehavior) -> Unit
 
     /**刷新完成后, 需要重置滚动到的y轴距离*/
     fun getRefreshResetScrollY(): Int

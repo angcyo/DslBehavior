@@ -6,10 +6,8 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
-import com.angcyo.behavior.IScrollBehaviorListener
-import com.angcyo.behavior.behavior
-import com.angcyo.behavior.mH
-import com.angcyo.behavior.topCanScroll
+import com.angcyo.behavior.*
+import com.angcyo.behavior.refresh.IRefreshContentBehavior
 import kotlin.math.min
 
 /**
@@ -24,6 +22,8 @@ abstract class BaseLinkageGradientBehavior(
     attributeSet: AttributeSet? = null
 ) : BaseLinkageBehavior(context, attributeSet), IScrollBehaviorListener {
 
+    var _contentScrollBehavior: BaseScrollBehavior<*>? = null
+
     init {
         behaviorScrollTo = { _, _ ->
             //no op
@@ -36,8 +36,9 @@ abstract class BaseLinkageGradientBehavior(
         dependency: View
     ): Boolean {
         super.layoutDependsOn(parent, child, dependency)
-        headerView.behavior()?.apply {
-            if (this is LinkageHeaderBehavior) {
+        dependency.behavior()?.apply {
+            if (this is IRefreshContentBehavior && this is BaseScrollBehavior) {
+                _contentScrollBehavior = this
                 this.addScrollListener(this@BaseLinkageGradientBehavior)
             }
         }
@@ -47,10 +48,15 @@ abstract class BaseLinkageGradientBehavior(
     override fun onScrollTo(x: Int, y: Int) {
         //向下滚动是正值
         val percent = y * 1f / getMaxGradientHeight()
+        //Log.i("angcyo", "$percent")
         onGradient(percent)
     }
 
-    override fun onBehaviorScrollTo(x: Int, y: Int) {
+    override fun onBehaviorScrollTo(scrollBehavior: BaseScrollBehavior<*>, x: Int, y: Int) {
+        if (scrollBehavior.behaviorScrollY == 0) {
+            //重置滚动距离
+            _gestureScrollY = 0
+        }
         //转发给自己处理
         if (y > 0) {
             _gestureScrollY = 0
@@ -117,7 +123,11 @@ abstract class BaseLinkageGradientBehavior(
                     } else {
                         //向上OverScroll时, 不清理滚动距离.因为无法恢复.
                     }
-                    _gestureScrollY -= dyUnconsumed
+                    if (_contentScrollBehavior?.behaviorScrollY == 0) {
+                        _gestureScrollY = 0
+                    } else {
+                        _gestureScrollY -= dyUnconsumed
+                    }
                     scrollTo(0, _gestureScrollY)
                 }
             }
