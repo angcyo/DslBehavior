@@ -25,7 +25,7 @@ open class ScaleHeaderRefreshEffectConfig : RefreshEffectConfig() {
     var targetViewIndexInContent: Int = 0
 
     /**获取目标View*/
-    var onGetTargetView: (behavior: BaseScrollBehavior<*>) -> View? = { behavior ->
+    var getTargetView: (behavior: BaseScrollBehavior<*>) -> View? = { behavior ->
         if (behavior.childView is ViewGroup) {
             (behavior.childView as ViewGroup).getChildAt(targetViewIndexInContent)
         } else {
@@ -43,7 +43,7 @@ open class ScaleHeaderRefreshEffectConfig : RefreshEffectConfig() {
         child: View
     ) {
         super.onContentLayout(contentBehavior, parent, child)
-        onGetTargetView(contentBehavior)?.apply {
+        getTargetView(contentBehavior)?.apply {
             if (contentBehavior.behaviorScrollY == 0 && _defaultLayoutParams == null) {
                 _defaultLayoutParams = layoutParams
                 _defaultTargetHeight = measuredHeight
@@ -56,7 +56,7 @@ open class ScaleHeaderRefreshEffectConfig : RefreshEffectConfig() {
             if (y > 0) {
                 //L.i("$_defaultTargetHeight $y")
                 //当内容需要向下滚动时, 改变目标view的高度
-                onGetTargetView(contentBehavior)?.apply {
+                getTargetView(contentBehavior)?.apply {
                     setHeight(_defaultTargetHeight + y)
                     val ratio = y * 1f / _defaultTargetHeight
 

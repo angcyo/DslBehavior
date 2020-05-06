@@ -59,14 +59,29 @@ interface IRefreshBehavior {
     /**内容停止了滚动, 此时需要恢复界面*/
     fun onContentStopScroll(contentBehavior: BaseScrollBehavior<*>) {
         if (_refreshBehaviorStatus != STATUS_REFRESH && !contentBehavior.isTouchHold) {
-            contentBehavior.startScrollTo(0, 0)
+
+            val resetScrollX = 0
+            val resetScrollY = if (contentBehavior is IRefreshContentBehavior) {
+                contentBehavior.getRefreshResetScrollY()
+            } else {
+                0
+            }
+
+            contentBehavior.startScrollTo(resetScrollX, resetScrollY)
         }
     }
 
     /**刷新状态改变,[touchHold]还处于[touch]状态*/
     fun onRefreshStatusChange(contentBehavior: BaseScrollBehavior<*>, from: Int, to: Int) {
         if (!contentBehavior.isTouchHold) {
-            contentBehavior.startScrollTo(0, 0)
+            val resetScrollX = 0
+            val resetScrollY = if (contentBehavior is IRefreshContentBehavior) {
+                contentBehavior.getRefreshResetScrollY()
+            } else {
+                0
+            }
+
+            contentBehavior.startScrollTo(resetScrollX, resetScrollY)
         }
     }
 

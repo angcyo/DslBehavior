@@ -117,6 +117,15 @@ class MainFragment : BaseDslFragment() {
         }
 
         AppTextItem()() {
+            itemText = "联动->背景放大(带事件)演示"
+            itemClick = {
+                dslFHelper {
+                    show(LinkageBackgroundScaleTouchFragment::class.java)
+                }
+            }
+        }
+
+        AppTextItem()() {
             itemText = "联动->刷新演示"
             itemClick = {
                 dslFHelper {
@@ -136,6 +145,7 @@ class MainFragment : BaseDslFragment() {
 
         DslBottomItem()() {
             itemText = "演示的数据随机生成, 如果数据量不足以触发滚动时, 请重新打开试试."
+            itemPaddingTop = 60 * dpi
             itemPaddingBottom = 60 * dpi
         }
 
