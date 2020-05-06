@@ -7,16 +7,6 @@
     android:background="@color/bg_primary_color"
     android:orientation="vertical">
 
-    <!--背景-->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.angcyo.behavior.linkage.LinkageScaleBehavior">
-
-        <include layout="@layout/layout_background" />
-
-    </FrameLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         style="@style/RvStyle"

@@ -41,6 +41,7 @@ abstract class BaseDslFragment : AbsLifecycleFragment() {
 
     open fun DslAdapter.renderDslAdapter() {
         AppTextItem()() {
+            itemBottomInsert = 0
             itemText = "列表顶部"
             configTextStyle {
                 textGravity = Gravity.CENTER
@@ -48,6 +49,7 @@ abstract class BaseDslFragment : AbsLifecycleFragment() {
         }
         loadTextItem()
         AppTextItem()() {
+            itemBottomInsert = 0
             itemText = "列表底部"
             configTextStyle {
                 textGravity = Gravity.CENTER

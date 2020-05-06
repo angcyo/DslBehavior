@@ -463,13 +463,9 @@ class LinkageHeaderBehavior(
         refreshBehaviorConfig = null
     }
 
-    override fun onLayoutChild(
-        parent: CoordinatorLayout,
-        child: View,
-        layoutDirection: Int
-    ): Boolean {
+    override fun onLayoutChildAfter(parent: CoordinatorLayout, child: View, layoutDirection: Int) {
+        super.onLayoutChildAfter(parent, child, layoutDirection)
         refreshBehaviorConfig?.onContentLayout(this, parent, child)
-        return super.onLayoutChild(parent, child, layoutDirection)
     }
 
     override fun getRefreshCurrentScrollY(dy: Int): Int {

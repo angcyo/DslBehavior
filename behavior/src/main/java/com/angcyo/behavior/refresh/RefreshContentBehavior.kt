@@ -109,8 +109,12 @@ open class RefreshContentBehavior(
         } else {
             0
         }
-        refreshBehaviorConfig?.onContentLayout(this, parent, child)
         return super.onLayoutChild(parent, child, layoutDirection)
+    }
+
+    override fun onLayoutChildAfter(parent: CoordinatorLayout, child: View, layoutDirection: Int) {
+        super.onLayoutChildAfter(parent, child, layoutDirection)
+        refreshBehaviorConfig?.onContentLayout(this, parent, child)
     }
 
     override fun layoutDependsOn(

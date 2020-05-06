@@ -70,7 +70,16 @@ class MainFragment : BaseDslFragment() {
             itemText = "标题栏渐变+智能阴影+背景放大演示"
             itemClick = {
                 dslFHelper {
-                    show(BackgroundFragment::class.java)
+                    show(BackgroundScaleFragment::class.java)
+                }
+            }
+        }
+
+        AppTextItem()() {
+            itemText = "标题栏渐变+智能阴影+背景放大(带事件)演示"
+            itemClick = {
+                dslFHelper {
+                    show(BackgroundScaleTouchFragment::class.java)
                 }
             }
         }
