@@ -111,7 +111,11 @@ abstract class BaseLinkageGradientBehavior(
             if (target == headerScrollView || headerScrollView == null) {
                 if (dyUnconsumed == 0) {
                     //非OverScroll
-                    _gestureScrollY -= dyConsumed
+                    if (dyConsumed > 0) {
+                        _gestureScrollY -= dyConsumed
+                    } else {
+                        _gestureScrollY = 0
+                    }
                     scrollTo(0, _gestureScrollY)
                 } else {
                     //OverScroll
