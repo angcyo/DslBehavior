@@ -5,21 +5,14 @@
     android:layout_height="match_parent"
     android:background="@color/bg_primary_color">
 
-    <!--背景-->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_behavior="com.angcyo.behavior.linkage.LinkageScaleBehavior">
-
-        <include layout="@layout/layout_background" />
-
-    </FrameLayout>
-
     <!--头部-->
     <FrameLayout
+        android:id="@+id/header_wrap_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="com.angcyo.behavior.linkage.LinkageHeaderBehavior">
+        app:layout_behavior="com.angcyo.behavior.linkage.LinkageHeaderBehavior"
+        app:layout_enable_bottom_over_scroll="false"
+        app:layout_enable_top_over_scroll="false">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/header_recycler_view"

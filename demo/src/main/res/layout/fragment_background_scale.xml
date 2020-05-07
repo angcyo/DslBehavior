@@ -10,7 +10,7 @@
     <!--背景-->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         app:layout_behavior="com.angcyo.behavior.linkage.LinkageScaleBehavior">
 
         <include layout="@layout/layout_background" />

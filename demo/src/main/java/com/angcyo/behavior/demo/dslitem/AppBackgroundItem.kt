@@ -3,6 +3,7 @@ package com.angcyo.behavior.demo.dslitem
 import android.widget.Toast
 import com.angcyo.behavior.demo.R
 import com.angcyo.dsladapter.DslAdapterItem
+import com.angcyo.dsladapter.dpi
 
 /**
  *
@@ -14,7 +15,7 @@ import com.angcyo.dsladapter.DslAdapterItem
 class AppBackgroundItem : DslAdapterItem() {
     init {
         itemLayoutId = R.layout.layout_background
-
+        itemHeight = 200 * dpi
         itemClick = {
             Toast.makeText(it.context, "点击...", Toast.LENGTH_SHORT).show()
         }

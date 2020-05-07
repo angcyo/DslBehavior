@@ -108,6 +108,24 @@ class MainFragment : BaseDslFragment() {
         }
 
         AppTextItem()() {
+            itemText = "联动->标题渐变演示"
+            itemClick = {
+                dslFHelper {
+                    show(LinkageFragment::class.java)
+                }
+            }
+        }
+
+        AppTextItem()() {
+            itemText = "联动->刷新演示"
+            itemClick = {
+                dslFHelper {
+                    show(LinkageRefreshFragment::class.java)
+                }
+            }
+        }
+
+        AppTextItem()() {
             itemText = "联动->背景放大演示"
             itemClick = {
                 dslFHelper {
@@ -125,28 +143,14 @@ class MainFragment : BaseDslFragment() {
             }
         }
 
-        AppTextItem()() {
-            itemText = "联动->刷新演示"
-            itemClick = {
-                dslFHelper {
-                    show(LinkageRefreshFragment::class.java)
-                }
-            }
-        }
-
-        AppTextItem()() {
-            itemText = "联动->标题渐变演示"
-            itemClick = {
-                dslFHelper {
-                    show(LinkageBackgroundScaleFragment::class.java)
-                }
-            }
-        }
-
         DslBottomItem()() {
             itemText = "演示的数据随机生成, 如果数据量不足以触发滚动时, 请重新打开试试."
             itemPaddingTop = 60 * dpi
             itemPaddingBottom = 60 * dpi
+
+            configTextStyle {
+                textGravity = Gravity.CENTER
+            }
         }
 
         batchLoad(60)

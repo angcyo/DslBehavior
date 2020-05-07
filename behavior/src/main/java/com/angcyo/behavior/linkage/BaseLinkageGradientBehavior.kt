@@ -46,20 +46,25 @@ abstract class BaseLinkageGradientBehavior(
     }
 
     override fun onScrollTo(x: Int, y: Int) {
+        _gestureScrollY = y
         //向下滚动是正值
         val percent = y * 1f / getMaxGradientHeight()
-        //Log.i("angcyo", "$percent")
+        //Log.i("angcyo", "$percent $y")
         onGradient(percent)
     }
 
     override fun onBehaviorScrollTo(scrollBehavior: BaseScrollBehavior<*>, x: Int, y: Int) {
-        //转发给自己处理
-        if (y > 0 && scrollBehavior.childView?.topCanScroll() == false) {
-            _gestureScrollY = 0
+        //Log.w("angcyo", "$y $behaviorScrollY $_gestureScrollY")
+
+        if (y > 0) {
+            //转发给自己处理
             scrollTo(x, y)
         } else {
-            //L.w("$_ovserScrollY $_nestedScrollY $_gestureScrollY")
-            scrollTo(0, min(y, _gestureScrollY))
+            //内容向上滚动
+            if (headerScrollView != null) {
+                //Linkage系列滚动
+                scrollTo(x, min(y, _gestureScrollY))
+            }
         }
     }
 
@@ -103,27 +108,25 @@ abstract class BaseLinkageGradientBehavior(
             type,
             consumed
         )
-        if (headerScrollView == null || _nestedScrollView == headerScrollView) {
-            if (target == headerScrollView || headerScrollView == null) {
-                if (dyUnconsumed == 0) {
-                    //非OverScroll
-                    if (!target.topCanScroll()) {
-                        _gestureScrollY = 0
+
+        if (dyUnconsumed == 0) {
+            //非OverScroll
+            if (headerScrollView == null || headerScrollView == target) {
+                //非Linkage系列滚动
+                if (!target.topCanScroll()) {
+                    _gestureScrollY = 0
+                }
+            }
+            _gestureScrollY -= dyConsumed
+            scrollTo(0, _gestureScrollY)
+        } else {
+            //OverScroll统一通过[BaseScrollBehavior]的[IScrollBehaviorListener]处理
+            if (dyUnconsumed < 0) {
+                //手指向下OverScroll, 此时的_gestureScrollY应该是正值
+                if (headerScrollView == null || headerScrollView == target) {
+                    if (_gestureScrollY < 0) {
+                        scrollTo(0, 0)
                     }
-                    _gestureScrollY -= dyConsumed
-                    scrollTo(0, _gestureScrollY)
-                } else {
-                    //OverScroll
-                    if (dyUnconsumed < 0) {
-                        //手指向下OverScroll, 此时的_gestureScrollY应该是正值
-                        if (_gestureScrollY < 0) {
-                            _gestureScrollY = 0
-                        }
-                    } else {
-                        //向上OverScroll时, 不清理滚动距离.因为无法恢复.
-                    }
-                    _gestureScrollY -= dyUnconsumed
-                    scrollTo(0, _gestureScrollY)
                 }
             }
         }
@@ -135,10 +138,15 @@ abstract class BaseLinkageGradientBehavior(
         target: View,
         type: Int
     ) {
-        if (headerScrollView == null) {
-            if (_nestedScrollView != null && !_nestedScrollView.topCanScroll()) {
-                //内嵌滚动结束之后, 如果顶部无法滚动, 重置_gestureScrollY距离
-                _gestureScrollY = 0
+        if (!isTouchHold) {
+            if (headerScrollView == null) {
+                if (!target.topCanScroll()) {
+                    scrollTo(0, 0)
+                }
+            } else {
+                if (_contentScrollBehavior?.behaviorScrollY == 0 && !headerScrollView.topCanScroll()) {
+                    scrollTo(0, 0)
+                }
             }
         }
         super.onStopNestedScroll(coordinatorLayout, child, target, type)
