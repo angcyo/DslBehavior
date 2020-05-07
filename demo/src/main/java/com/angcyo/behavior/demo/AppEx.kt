@@ -1,8 +1,10 @@
 package com.angcyo.behavior.demo
 
+import android.graphics.drawable.ColorDrawable
 import com.angcyo.dsladapter.DslAdapter
 import com.angcyo.dsladapter.nowTime
 import com.angcyo.item.DslTextInfoItem
+import com.angcyo.item._color
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
@@ -23,6 +25,7 @@ fun DslAdapter.loadTextItem(
 ) {
     for (i in 0 until count) {
         DslTextInfoItem()() {
+            itemBackgroundDrawable = ColorDrawable(_color(R.color.bg_primary_color))
             itemInfoText = "Position:$i ${tx()}"
             itemDarkText = nowTimeString()
             action()
