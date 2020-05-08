@@ -1,18 +1,14 @@
 package com.angcyo.behavior.demo.fragment
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import com.angcyo.behavior.behavior
 import com.angcyo.behavior.demo.BaseDslFragment
 import com.angcyo.behavior.demo.R
-import com.angcyo.behavior.demo.dslitem.AppBackgroundItem
-import com.angcyo.behavior.demo.dslitem.AppTextItem
-import com.angcyo.behavior.demo.loadTextItem
+import com.angcyo.behavior.demo.dslitem.AppUserInfoTouchItem
 import com.angcyo.behavior.refresh.IRefreshContentBehavior
 import com.angcyo.behavior.refresh.ScaleHeaderRefreshEffectConfig
 import com.angcyo.dsladapter.DslAdapter
-import com.angcyo.dsladapter.updateNow
 
 /**
  *
@@ -30,29 +26,18 @@ class BackgroundScaleTouchFragment : BaseDslFragment() {
         super.initBaseView(rootView, savedInstanceState)
         rootView.findViewById<View>(R.id.recycler_view)?.behavior()?.apply {
             if (this is IRefreshContentBehavior) {
-                this.refreshBehaviorConfig = ScaleHeaderRefreshEffectConfig()
+                this.refreshBehaviorConfig = ScaleHeaderRefreshEffectConfig().apply {
+                    targetViewIdInContent = R.id.image_view
+                }
             }
         }
     }
 
-    override fun DslAdapter.renderDslAdapter() {
-        AppBackgroundItem()()
+    override fun renderDslAdapter(adapter: DslAdapter) {
+        adapter.apply {
+            AppUserInfoTouchItem()()
+        }
 
-        AppTextItem()() {
-            itemBottomInsert = 0
-            itemText = "列表顶部"
-            configTextStyle {
-                textGravity = Gravity.CENTER
-            }
-        }
-        loadTextItem()
-        AppTextItem()() {
-            itemBottomInsert = 0
-            itemText = "列表底部"
-            configTextStyle {
-                textGravity = Gravity.CENTER
-            }
-        }
-        updateNow()
+        super.renderDslAdapter(adapter)
     }
 }

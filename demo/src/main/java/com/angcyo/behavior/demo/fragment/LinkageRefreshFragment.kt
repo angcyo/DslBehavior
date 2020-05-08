@@ -34,7 +34,7 @@ class LinkageRefreshFragment : BaseVpFragment() {
 
                         headerDslAdapter.apply {
                             clearItems()
-                            renderHeaderAdapter()
+                            renderHeaderAdapter(this)
                         }
 
                         refreshBehaviorConfig?.onSetRefreshBehaviorStatus(

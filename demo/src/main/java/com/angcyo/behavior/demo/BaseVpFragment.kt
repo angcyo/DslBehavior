@@ -27,7 +27,7 @@ abstract class BaseVpFragment : AbsLifecycleFragment() {
         super.initBaseView(rootView, savedInstanceState)
         rootView.findViewById<RecyclerView>(R.id.header_recycler_view)?.initDslAdapter {
             headerDslAdapter = this
-            renderHeaderAdapter()
+            renderHeaderAdapter(this)
         }
 
         rootView.findViewById<ViewPager>(R.id.view_pager)?.apply {
@@ -46,22 +46,24 @@ abstract class BaseVpFragment : AbsLifecycleFragment() {
         }
     }
 
-    open fun DslAdapter.renderHeaderAdapter() {
-        AppTextItem()() {
-            itemBottomInsert = 0
-            itemText = "列表顶部"
-            configTextStyle {
-                textGravity = Gravity.CENTER
+    open fun renderHeaderAdapter(adapter: DslAdapter) {
+        adapter.apply {
+            AppTextItem()() {
+                itemBottomInsert = 0
+                itemText = "列表顶部"
+                configTextStyle {
+                    textGravity = Gravity.CENTER
+                }
             }
-        }
-        loadTextItem()
-        AppTextItem()() {
-            itemBottomInsert = 0
-            itemText = "列表底部"
-            configTextStyle {
-                textGravity = Gravity.CENTER
+            loadTextItem()
+            AppTextItem()() {
+                itemBottomInsert = 0
+                itemText = "列表底部"
+                configTextStyle {
+                    textGravity = Gravity.CENTER
+                }
             }
+            updateNow()
         }
-        updateNow()
     }
 }

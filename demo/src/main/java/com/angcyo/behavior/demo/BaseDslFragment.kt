@@ -31,7 +31,7 @@ abstract class BaseDslFragment : AbsLifecycleFragment() {
         rootView.findViewById<Toolbar>(R.id.toolbar)?.title = this::class.java.simpleName
         rootView.findViewById<RecyclerView>(R.id.recycler_view)?.initDslAdapter {
             dslAdapter = this
-            renderDslAdapter()
+            renderDslAdapter(this)
         }
     }
 
@@ -39,22 +39,24 @@ abstract class BaseDslFragment : AbsLifecycleFragment() {
         view?.findViewById<Toolbar>(R.id.toolbar)?.title = title
     }
 
-    open fun DslAdapter.renderDslAdapter() {
-        AppTextItem()() {
-            itemBottomInsert = 0
-            itemText = "列表顶部"
-            configTextStyle {
-                textGravity = Gravity.CENTER
+    open fun renderDslAdapter(adapter: DslAdapter) {
+        adapter.apply {
+            AppTextItem()() {
+                itemBottomInsert = 0
+                itemText = "列表顶部"
+                configTextStyle {
+                    textGravity = Gravity.CENTER
+                }
             }
-        }
-        loadTextItem()
-        AppTextItem()() {
-            itemBottomInsert = 0
-            itemText = "列表底部"
-            configTextStyle {
-                textGravity = Gravity.CENTER
+            loadTextItem()
+            AppTextItem()() {
+                itemBottomInsert = 0
+                itemText = "列表底部"
+                configTextStyle {
+                    textGravity = Gravity.CENTER
+                }
             }
+            updateNow()
         }
-        updateNow()
     }
 }

@@ -24,14 +24,16 @@ class RefreshEffectFragment : BaseDslFragment() {
         rootView.findViewById<View>(R.id.toolbar)?.setBehavior(TitleBarPlaceholderBehavior())
     }
 
-    override fun DslAdapter.renderDslAdapter() {
-        AppTextItem()() {
-            itemText = "到了边界, 继续下拉试试?"
+    override fun renderDslAdapter(adapter: DslAdapter) {
+        adapter.apply {
+            AppTextItem()() {
+                itemText = "到了边界, 继续下拉试试?"
+            }
+            loadTextItem()
+            AppTextItem()() {
+                itemText = "到了边界, 继续上拉试试?"
+            }
+            updateNow()
         }
-        loadTextItem()
-        AppTextItem()() {
-            itemText = "到了边界, 继续上拉试试?"
-        }
-        updateNow()
     }
 }

@@ -35,7 +35,7 @@ class RefreshFragment : BaseDslFragment() {
 
                         dslAdapter.apply {
                             clearItems()
-                            renderDslAdapter()
+                            renderDslAdapter(this)
                         }
 
                         finishRefresh()

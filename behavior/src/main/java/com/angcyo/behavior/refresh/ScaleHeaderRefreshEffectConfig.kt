@@ -24,12 +24,16 @@ open class ScaleHeaderRefreshEffectConfig : RefreshEffectConfig() {
     /**目标view, 在content ViewGroup中的index*/
     var targetViewIndexInContent: Int = 0
 
+    var targetViewIdInContent: Int = -1
+
     /**获取目标View*/
     var getTargetView: (behavior: BaseScrollBehavior<*>) -> View? = { behavior ->
-        if (behavior.childView is ViewGroup) {
-            (behavior.childView as ViewGroup).getChildAt(targetViewIndexInContent)
-        } else {
-            null
+        when {
+            targetViewIdInContent > 0 -> behavior.childView?.findViewById(targetViewIdInContent)
+            behavior.childView is ViewGroup -> (behavior.childView as ViewGroup).getChildAt(
+                targetViewIndexInContent
+            )
+            else -> null
         }
     }
 

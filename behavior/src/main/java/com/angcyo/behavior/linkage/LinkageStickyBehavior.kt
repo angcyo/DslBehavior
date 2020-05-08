@@ -42,7 +42,7 @@ class LinkageStickyBehavior(
         dependency: View
     ): Boolean {
         val result = super.onDependentViewChanged(parent, child, dependency)
-        if (linkageHeaderBehavior?.isStickyHoldScroll == false) {
+        if (linkageHeaderBehavior?.isStickyHoldScroll != true) {
             child.offsetTopTo(dependency.bottom)
         }
         return result
@@ -55,7 +55,7 @@ class LinkageStickyBehavior(
     override fun onLayoutChildAfter(parent: CoordinatorLayout, child: View, layoutDirection: Int) {
         super.onLayoutChildAfter(parent, child, layoutDirection)
         dependsView?.apply {
-            if (linkageHeaderBehavior?.isStickyHoldScroll == false) {
+            if (linkageHeaderBehavior?.isStickyHoldScroll != true) {
                 child.offsetTopTo(bottom)
             }
         }

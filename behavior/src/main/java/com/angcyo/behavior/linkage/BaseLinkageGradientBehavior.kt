@@ -67,7 +67,7 @@ abstract class BaseLinkageGradientBehavior(
     override fun onBehaviorScrollTo(scrollBehavior: BaseScrollBehavior<*>, x: Int, y: Int) {
         //Log.w("angcyo", "$y $behaviorScrollY $_gestureScrollY")
         if (scrollBehavior is LinkageStickyBehavior ||
-            linkageHeaderBehavior?.isStickyHoldScroll == false
+            linkageHeaderBehavior?.isStickyHoldScroll != true
         ) {
             if (y > 0) {
                 //转发给自己处理

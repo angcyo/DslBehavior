@@ -4,7 +4,7 @@
     android:id="@+id/tab_layout"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="#666466"
+    android:background="#CFCDCF"
     app:tab_indicator_gradient_end_color="@color/colorPrimaryDark"
     app:tab_indicator_gradient_start_color="@color/colorPrimary">
 
@@ -16,11 +16,12 @@
         style="@style/TabItemStyle"
         android:text="最新" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         style="@style/TabItemStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:scaleType="centerInside"
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         style="@style/TabItemStyle"
