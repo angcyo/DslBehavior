@@ -61,7 +61,10 @@ open class ScaleHeaderRefreshEffectConfig : RefreshEffectConfig() {
                 //L.i("$_defaultTargetHeight $y")
                 //当内容需要向下滚动时, 改变目标view的高度
                 getTargetView(contentBehavior)?.apply {
-                    setHeight(_defaultTargetHeight + y)
+                    val height = _defaultTargetHeight + y
+                    post {
+                        setHeight(height)
+                    }
                     val ratio = y * 1f / _defaultTargetHeight
 
                     if (ratio >= scaleThreshold) {

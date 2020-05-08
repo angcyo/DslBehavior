@@ -166,7 +166,9 @@ open class LinkageScaleBehavior(
             super.onBehaviorScrollTo(scrollBehavior, x, y)
             if (enableHeightEffect && oldY != y) {
                 _targetView?.apply {
-                    requestLayout()
+                    post {
+                        requestLayout()
+                    }
                 }
             }
         } else {
