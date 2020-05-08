@@ -12,6 +12,8 @@
         <attr name="layout_enable_top_over_scroll" format="boolean" />
         <attr name="layout_enable_bottom_over_scroll" format="boolean" />
         <attr name="layout_over_scroll_effect_factor" format="float" />
+        <attr name="layout_enable_sticky_hold_mode" format="boolean" />
+        <attr name="layout_sticky_hold_offset_height" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="LinkageScaleBehavior_Layout">

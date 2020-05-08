@@ -143,6 +143,15 @@ class MainFragment : BaseDslFragment() {
             }
         }
 
+        AppTextItem()() {
+            itemText = "联动->模仿`酷安`应用详情页效果"
+            itemClick = {
+                dslFHelper {
+                    show(LinkageStickyHoldFragment::class.java)
+                }
+            }
+        }
+
         DslBottomItem()() {
             itemText = "演示的数据随机生成, 如果数据量不足以触发滚动时, 请重新打开试试."
             itemPaddingTop = 60 * dpi

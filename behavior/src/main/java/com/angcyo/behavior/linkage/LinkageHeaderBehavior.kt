@@ -28,6 +28,63 @@ class LinkageHeaderBehavior(
     attributeSet: AttributeSet? = null
 ) : BaseLinkageBehavior(context, attributeSet), IContentBehavior, IRefreshContentBehavior {
 
+    //<editor-fold desc="可配置属性">
+
+    /**不管Footer是否可以滚动, 都优先滚动Header*/
+    var priorityHeader = false //优先滚动头部
+
+    /**滚动最小值, 要考虑标题栏的高度*/
+    var fixTitleBar: Boolean = true
+
+    /**滚动最小值, 要考虑状态栏的高度*/
+    var fixStatusBar: Boolean = true
+
+    /**滚动最小值, 额外要考虑的距离*/
+    var fixScrollTopOffset: Int = 0
+
+    /**激活顶部Over效果. 当滚动到顶的时候, 可以继续滚动*/
+    var enableTopOverScroll: Boolean = true
+
+    /**激活底部Over效果. 当滚动到顶的时候, 可以继续滚动*/
+    var enableBottomOverScroll: Boolean = false
+
+    /**Fling触发的Over,dy的倍数*/
+    var overScrollEffectFactor = 2f
+
+    /**标题栏, 用于计算滚动距离和, 让footer能够跟随在title bar下面*/
+    var titleBarBehavior: ITitleBarBehavior? = null
+
+    /**是否激活[LinkageStickyBehavior]控制, 类似于酷安应用商店, 应用详情页的效果*/
+    var enableStickyHoldMode = false
+
+    /**额外需要offset的高度.仅在[enableStickyHoldMode=true]时有效*/
+    var stickyHoldOffsetHeight = 0
+
+    //</editor-fold desc="可配置属性">
+
+    //<editor-fold desc="下拉刷新属性">
+
+    /**刷新行为的支持*/
+    override var refreshBehaviorConfig: IRefreshBehavior? = null
+
+    //是否激活了刷新功能
+    val enableRefresh: Boolean get() = refreshBehaviorConfig != null
+
+    /**刷新触发的回调*/
+    override var refreshAction: (IRefreshContentBehavior) -> Unit =
+        { Log.i(this::class.java.simpleName, "触发刷新:${it.simpleHash()}") }
+
+    /**刷新状态*/
+    var refreshStatus: Int
+        get() = refreshBehaviorConfig?._refreshBehaviorStatus ?: STATUS_NORMAL
+        set(value) {
+            refreshBehaviorConfig?.onSetRefreshBehaviorStatus(this, value)
+        }
+
+    //</editor-fold desc="下拉刷新属性">
+
+    //<editor-fold desc="计算相关属性">
+
     //允许滚动的最小距离
     val minScroll: Int
         get() {
@@ -58,53 +115,39 @@ class LinkageHeaderBehavior(
             return result
         }
 
-    /**不管Footer是否可以滚动, 都优先滚动Header*/
-    var priorityHeader = false //优先滚动头部
-
-    /**滚动最小值, 要考虑标题栏的高度*/
-    var fixTitleBar: Boolean = true
-
-    /**滚动最小值, 要考虑状态栏的高度*/
-    var fixStatusBar: Boolean = true
-
-    /**滚动最小值, 额外要考虑的距离*/
-    var fixScrollTopOffset: Int = 0
-
-    /**激活顶部Over效果. 当滚动到顶的时候, 可以继续滚动*/
-    var enableTopOverScroll: Boolean = true
-
-    /**激活底部Over效果. 当滚动到顶的时候, 可以继续滚动*/
-    var enableBottomOverScroll: Boolean = false
-
-    /**Fling触发的Over,dy的倍数*/
-    var overScrollEffectFactor = 2f
-
-    /**标题栏, 用于计算滚动距离和, 让footer能够跟随在title bar下面*/
-    var titleBarBehavior: ITitleBarBehavior? = null
-
-    //<editor-fold desc="下拉刷新属性">
-
-    /**刷新行为的支持*/
-    override var refreshBehaviorConfig: IRefreshBehavior? = null
-
-    //是否激活了刷新功能
-    val enableRefresh: Boolean get() = refreshBehaviorConfig != null
-
-    /**刷新触发的回调*/
-    override var refreshAction: (IRefreshContentBehavior) -> Unit =
-        { Log.i(this::class.java.simpleName, "触发刷新:${it.simpleHash()}") }
-
-    /**刷新状态*/
-    var refreshStatus: Int
-        get() = refreshBehaviorConfig?._refreshBehaviorStatus ?: STATUS_NORMAL
-        set(value) {
-            refreshBehaviorConfig?.onSetRefreshBehaviorStatus(this, value)
+    //[enableStickyHoldMode]模式下, childView需要排除的高度
+    val stickyHoldUsedHeight: Int
+        get() {
+            return if (enableStickyHoldMode) {
+                stickyView.mH() + stickyHoldOffsetHeight
+            } else {
+                0
+            }
         }
 
-    //</editor-fold desc="下拉刷新属性">
+    //[enableStickyHoldMode]模式下, headerView是否在没有滚动到底部的情况下, 滚动sticky childView
+    val isStickyHoldScroll: Boolean
+        get() {
+            return if (enableStickyHoldMode) {
+                headerScrollView?.bottomCanScroll() == true
+            } else {
+                false
+            }
+        }
+
+    //当前[StickyHoldMode]处于打开状态
+    val isStickyHoldScrollOpen: Boolean
+        get() {
+            val minTop = usedHeight
+            return isStickyHoldScroll && linkageStickyBehavior?.childView?.top == minTop
+        }
+
+    //</editor-fold desc="计算相关属性">
 
     init {
         showLog = false
+
+        stickyHoldOffsetHeight = (10 * context.resources.displayMetrics.density).toInt()
 
         val array =
             context.obtainStyledAttributes(attributeSet, R.styleable.LinkageHeaderBehavior_Layout)
@@ -131,6 +174,14 @@ class LinkageHeaderBehavior(
         overScrollEffectFactor = array.getFloat(
             R.styleable.LinkageHeaderBehavior_Layout_layout_over_scroll_effect_factor,
             overScrollEffectFactor
+        )
+        enableStickyHoldMode = array.getBoolean(
+            R.styleable.LinkageHeaderBehavior_Layout_layout_enable_sticky_hold_mode,
+            enableStickyHoldMode
+        )
+        stickyHoldOffsetHeight = array.getDimensionPixelOffset(
+            R.styleable.LinkageHeaderBehavior_Layout_layout_sticky_hold_offset_height,
+            stickyHoldOffsetHeight
         )
         array.recycle()
 
@@ -163,6 +214,14 @@ class LinkageHeaderBehavior(
             if (this is IRefreshBehavior) {
                 refreshBehaviorConfig = this
             }
+
+            if (enableStickyHoldMode) {
+                if (this is LinkageStickyBehavior) {
+                    this.behaviorScrollTo = { x, y ->
+                        scrollStickyHoldTo(y)
+                    }
+                }
+            }
         }
 
         return super.layoutDependsOn(parent, child, dependency)
@@ -182,7 +241,17 @@ class LinkageHeaderBehavior(
         val footerSV = footerScrollView
         if (target == footerSV) {
             //如果是底部传来的内嵌滚动
-            if (priorityHeader || (behaviorScrollY != minScroll && behaviorScrollY != maxScroll) /*防止头部滚动一半的情况*/) {
+            if (isStickyHoldScroll) {
+                if (!isStickyHoldScrollOpen) {
+                    if (dy > 0 && footerScrollView.bottomCanScroll()) {
+                        //当sticky hold处于半中间状态, 此时底部向上滑动
+                        linkageStickyBehavior?.apply {
+                            scrollBy(0, dy)
+                            consumed[1] = dy
+                        }
+                    }
+                }
+            } else if (priorityHeader || (behaviorScrollY != minScroll && behaviorScrollY != maxScroll) /*防止头部滚动一半的情况*/) {
                 consumedScrollVertical(dy, behaviorScrollY, minScroll, maxScroll, consumed)
             } else {
                 //这里处理Footer不能滚动时, 再滚动
@@ -342,33 +411,48 @@ class LinkageHeaderBehavior(
             _nestedFlingView.stopScroll()
             _nestedFlingView = null
         } else {
-            val scroll = MathUtils.clamp(behaviorScrollY + dy, minScroll, maxScroll)
-            scrollTo(behaviorScrollX, scroll)
+            if (isStickyHoldScroll) {
+                isOverScroll = dy > 0 && !footerScrollView.topCanScroll()
+                isOverScroll = isOverScroll || dy < 0 && !footerScrollView.bottomCanScroll()
+
+                if (isOverScroll) {
+                    linkageStickyBehavior?.apply {
+                        //Log.w("angcyo", "scrollBy:${-dy}")
+                        scrollBy(0, -dy)
+                    }
+                }
+            } else {
+                val scroll = MathUtils.clamp(behaviorScrollY + dy, minScroll, maxScroll)
+                scrollTo(behaviorScrollX, scroll)
+            }
         }
     }
 
     /**over归位*/
     fun resetOverScroll() {
-        if ((enableTopOverScroll || enableBottomOverScroll) && !isTouchHold && childView != null) {
-            //L.e("恢复位置.")
-            if (behaviorScrollY > maxScroll) {
-                startScrollTo(0, 0)
-            } else if (minScroll in (behaviorScrollY + 1) until maxScroll) {
-                startScrollTo(0, minScroll)
-            }
+        if (!isTouchHold && childView != null) {
+            if ((enableTopOverScroll || enableBottomOverScroll)) {
+                //L.e("恢复位置.")
+                if (behaviorScrollY > maxScroll) {
+                    startScrollTo(0, 0)
+                } else if (minScroll in (behaviorScrollY + 1) until maxScroll) {
+                    startScrollTo(0, minScroll)
+                }
 
-            refreshBehaviorConfig?.onContentStopScroll(this)
+                refreshBehaviorConfig?.onContentStopScroll(this)
+            }
+            resetScrollStickyHold()
         }
     }
 
-    /**展开头部*/
+    /**展开头部, 让头部可见*/
     fun open() {
         stopNestedScroll()
         stopNestedFling()
         startScrollTo(0, 0)
     }
 
-    /**关闭头部*/
+    /**关闭头部, 让头部不可见*/
     fun close() {
         stopNestedScroll()
         stopNestedFling()
@@ -389,9 +473,13 @@ class LinkageHeaderBehavior(
 
     override fun onTouchFinish(parent: CoordinatorLayout, child: View, ev: MotionEvent) {
         super.onTouchFinish(parent, child, ev)
-        if (!isTouchHold && _nestedScrollView == null) {
-            //在非nested scroll 视图上滚动过
-            resetOverScroll()
+        if (!isTouchHold) {
+            if (_nestedScrollView == null) {
+                //在非nested scroll 视图上滚动过
+                resetOverScroll()
+            } else {
+                resetScrollStickyHold()
+            }
         }
     }
 
@@ -405,6 +493,12 @@ class LinkageHeaderBehavior(
         velocityX: Float,
         velocityY: Float
     ): Boolean {
+        if (isStickyHoldScroll) {
+            if (!isStickyHoldScrollOpen) {
+                return false
+            }
+        }
+
         val absX = abs(velocityX)
         val absY = abs(velocityY)
         if (_nestedScrollView == null &&
@@ -441,14 +535,19 @@ class LinkageHeaderBehavior(
         val absX = abs(distanceX)
         val absY = abs(distanceY)
 
-        //L.i("scroll $distanceY ${_nestedScrollView?.simpleHash()}")
-
         if (_nestedScrollView == null) {
             stopNestedScroll()
         }
 
         if (_nestedScrollView == null && absY > absX && absY > touchSlop && e1 != null && e2 != null) {
-            onNestedPreScrollOther(childView, distanceY.toInt(), _scrollConsumed)
+            if (isStickyHoldScroll) {
+                linkageStickyBehavior?.apply {
+                    //Log.i("angcyo", "scrollBy:$distanceY")
+                    scrollBy(0, distanceY.toInt())
+                }
+            } else {
+                onNestedPreScrollOther(childView, distanceY.toInt(), _scrollConsumed)
+            }
             return true
         }
         return super.onScroll(e1, e2, distanceX, distanceY)
@@ -461,6 +560,35 @@ class LinkageHeaderBehavior(
     override fun onDependentViewRemoved(parent: CoordinatorLayout, child: View, dependency: View) {
         super.onDependentViewRemoved(parent, child, dependency)
         refreshBehaviorConfig = null
+    }
+
+    override fun onMeasureChild(
+        parent: CoordinatorLayout,
+        child: View,
+        parentWidthMeasureSpec: Int,
+        widthUsed: Int,
+        parentHeightMeasureSpec: Int,
+        heightUsed: Int
+    ): Boolean {
+        var result = super.onMeasureChild(
+            parent,
+            child,
+            parentWidthMeasureSpec,
+            widthUsed,
+            parentHeightMeasureSpec,
+            heightUsed
+        )
+        if (enableStickyHoldMode) {
+            parent.onMeasureChild(
+                child,
+                parentWidthMeasureSpec,
+                widthUsed,
+                parentHeightMeasureSpec,
+                heightUsed + stickyHoldUsedHeight
+            )
+            result = true
+        }
+        return result
     }
 
     override fun onLayoutChildAfter(parent: CoordinatorLayout, child: View, layoutDirection: Int) {
@@ -511,5 +639,72 @@ class LinkageHeaderBehavior(
     }
 
     //<editor-fold desc="刷新控制">
+
+    //<editor-fold desc="StickyHoldMode">
+
+    fun scrollStickyHoldTo(y: Int) {
+        //Log.i("angcyo", "y:$y")
+        if (isStickyHoldScroll) {
+            val minTop = usedHeight
+            val maxTop = childView?.bottom ?: 0
+
+            linkageStickyBehavior?.apply {
+                val top = maxTop - y
+                childView?.offsetTopTo(top, minTop, maxTop)
+                //Log.w("angcyo", "top:${childView?.top}")
+            }
+        }
+    }
+
+    /**直接打开[StickyHoldMode]状态, 让stick直接滚动到顶部*/
+    fun openScrollStickyHold() {
+        if (isStickyHoldScroll) {
+            val minTop = usedHeight
+            val maxTop = childView?.bottom ?: 0
+
+            linkageStickyBehavior?.apply {
+                startScrollTo(0, maxTop - minTop)
+            }
+        }
+    }
+
+    /**直接关闭[StickyHoldMode]状态, 让stick直接滚动到默认位置*/
+    fun closeScrollStickyHold() {
+        if (isStickyHoldScroll) {
+            linkageStickyBehavior?.apply {
+                startScrollTo(0, 0)
+            }
+        }
+    }
+
+    /**根据当前滚动位置, 自动恢复至默认位置*/
+    fun resetScrollStickyHold() {
+        if (isStickyHoldScroll) {
+            val minTop = usedHeight
+            val maxTop = childView?.bottom ?: 0
+
+            linkageStickyBehavior?.apply {
+                val top = childView?.top ?: 0
+
+                if (top - minTop <= (maxTop - minTop) / 2) {
+                    //停留在上半部
+                    if (top != minTop) {
+                        openScrollStickyHold()
+                    } else {
+                        behaviorScrollY = maxTop - minTop
+                    }
+                } else {
+                    //停留在下半部
+                    if (top != maxTop) {
+                        closeScrollStickyHold()
+                    } else {
+                        behaviorScrollY = 0
+                    }
+                }
+            }
+        }
+    }
+
+    //</editor-fold desc="StickyHoldMode">
 
 }
