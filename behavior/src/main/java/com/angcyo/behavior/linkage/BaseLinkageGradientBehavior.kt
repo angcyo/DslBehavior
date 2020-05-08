@@ -8,6 +8,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import com.angcyo.behavior.*
 import com.angcyo.behavior.refresh.IRefreshContentBehavior
+import kotlin.math.absoluteValue
 import kotlin.math.min
 
 /**
@@ -185,7 +186,9 @@ abstract class BaseLinkageGradientBehavior(
         distanceX: Float,
         distanceY: Float
     ): Boolean {
-        if (linkageHeaderBehavior?.isStickyHoldScroll == true) {
+        if (linkageHeaderBehavior?.isStickyHoldScroll == true ||
+            distanceX.absoluteValue > distanceY.absoluteValue
+        ) {
             //no op
         } else {
             if (headerScrollView == null) {
