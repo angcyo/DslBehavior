@@ -39,6 +39,10 @@ abstract class BaseDependsBehavior<T : View>(
     val isTouchHold: Boolean
         get() = (parentLayout as? RCoordinatorLayout)?._isTouch ?: false
 
+    /**手势是否被其他子控件拦截了*/
+    val isDisallowIntercept: Boolean
+        get() = (parentLayout as? RCoordinatorLayout)?._disallowIntercept ?: false
+
     /**当[CoordinatorLayout]只有一个child时, 这个方法不会回调*/
     @CallSuper
     override fun layoutDependsOn(parent: CoordinatorLayout, child: T, dependency: View): Boolean {
@@ -224,8 +228,8 @@ abstract class BaseDependsBehavior<T : View>(
             max
         }
 
-        if (current !in minValue..maxValue) {
-            //不在范围内
+        if (current < minValue || current > maxValue) {
+            //不在范围内, 不消耗滚动
             return 0
         }
 

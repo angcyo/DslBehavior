@@ -14,6 +14,7 @@ import com.angcyo.behavior.refresh.IRefreshBehavior.Companion.STATUS_NORMAL
 import com.angcyo.behavior.refresh.IRefreshContentBehavior
 import com.angcyo.behavior.refresh.RefreshEffectConfig
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 import kotlin.math.min
 
 /**
@@ -275,15 +276,23 @@ class LinkageHeaderBehavior(
                         }
                     }
                 }
-            } else if (priorityHeader || (behaviorScrollY != minScroll && behaviorScrollY != maxScroll) /*防止头部滚动一半的情况*/) {
+            } else if (priorityHeader) {
                 consumedScrollVertical(dy, behaviorScrollY, minScroll, maxScroll, consumed)
             } else {
                 //这里处理Footer不能滚动时, 再滚动
-                if (dy > 0 && behaviorScrollY != maxScroll) {
+                if (dy > 0) {
                     //手指向上滑动
-                    consumedScrollVertical(dy, behaviorScrollY, minScroll, maxScroll, consumed)
-                } else if (behaviorScrollY != minScroll) {
-                    consumedScrollVertical(dy, behaviorScrollY, minScroll, maxScroll, consumed)
+                    if (behaviorScrollY != minScroll) {
+                        consumedScrollVertical(dy, behaviorScrollY, minScroll, maxScroll, consumed)
+                    }
+                } else {
+                    //手指向下滑动
+                    if (behaviorScrollY != minScroll && behaviorScrollY != maxScroll) {
+                        val topCanScroll = target.topCanScroll()
+                        val min = if (topCanScroll) behaviorScrollY else minScroll
+                        val max = if (topCanScroll) minScroll else maxScroll
+                        consumedScrollVertical(dy, behaviorScrollY, min, max, consumed)
+                    }
                 }
             }
         } else if (target == headerScrollView) {
@@ -738,6 +747,32 @@ class LinkageHeaderBehavior(
                 }
             }
         }
+    }
+
+    override fun onNestedPreFling(
+        coordinatorLayout: CoordinatorLayout,
+        child: View,
+        target: View,
+        velocityX: Float,
+        velocityY: Float
+    ): Boolean {
+        val result = super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY)
+
+        if (isStickyHoldScroll &&
+            target == footerScrollView &&
+            velocityY.absoluteValue > velocityX.absoluteValue &&
+            !target.topCanScroll()
+        ) {
+            if (velocityY > 0) {
+                //向上fling
+                openScrollStickyHold()
+            } else {
+                //向下fling
+                closeScrollStickyHold()
+            }
+        }
+
+        return result
     }
 
     //</editor-fold desc="StickyHoldMode">

@@ -186,7 +186,8 @@ abstract class BaseLinkageGradientBehavior(
         distanceX: Float,
         distanceY: Float
     ): Boolean {
-        if (linkageHeaderBehavior?.isStickyHoldScroll == true ||
+        if (isDisallowIntercept ||
+            linkageHeaderBehavior?.isStickyHoldScroll == true ||
             distanceX.absoluteValue > distanceY.absoluteValue
         ) {
             //no op
@@ -202,7 +203,6 @@ abstract class BaseLinkageGradientBehavior(
                 scrollTo(0, _gestureScrollY)
             }
         }
-        //L.e("...$distanceX $distanceY $_gestureScrollY")
         return false
     }
 

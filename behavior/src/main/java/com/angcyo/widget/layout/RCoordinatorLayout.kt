@@ -34,6 +34,13 @@ open class RCoordinatorLayout(
         return super.dispatchTouchEvent(ev)
     }
 
+    var _disallowIntercept: Boolean = false
+
+    override fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+        super.requestDisallowInterceptTouchEvent(disallowIntercept)
+        _disallowIntercept = disallowIntercept
+    }
+
     override fun computeScroll() {
         eachChildVisibility { _, child ->
             (child.layoutParams.coordinatorParams()?.behavior as? BaseScrollBehavior)?.onComputeScroll(
