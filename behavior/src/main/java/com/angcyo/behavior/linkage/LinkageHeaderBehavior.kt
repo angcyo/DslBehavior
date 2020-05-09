@@ -205,8 +205,6 @@ class LinkageHeaderBehavior(
         child: View,
         dependency: View
     ): Boolean {
-        headerView = child
-
         dependency.behavior()?.apply {
             if (this is ITitleBarBehavior) {
                 titleBarBehavior = this
@@ -223,8 +221,34 @@ class LinkageHeaderBehavior(
                 }
             }
         }
-
         return super.layoutDependsOn(parent, child, dependency)
+    }
+
+    override fun onStartNestedScroll(
+        coordinatorLayout: CoordinatorLayout,
+        child: View,
+        directTargetChild: View,
+        target: View,
+        axes: Int,
+        type: Int
+    ): Boolean {
+
+        if (target == footerScrollView) {
+            if (!target.topCanScroll() && !target.bottomCanScroll()) {
+                //当底部RV不需要滚动时, 这个时候如果开启了背景高度变化, 会有BUG.
+                //所以, 这种情况关闭内嵌滚动, 用[onGestureScroll]实现相同效果
+                return false
+            }
+        }
+
+        return super.onStartNestedScroll(
+            coordinatorLayout,
+            child,
+            directTargetChild,
+            target,
+            axes,
+            type
+        )
     }
 
     override fun onNestedPreScroll(
@@ -350,6 +374,10 @@ class LinkageHeaderBehavior(
         }
     }
 
+    override fun scrollTo(x: Int, y: Int) {
+        super.scrollTo(x, y)
+    }
+
     //over阻尼效果
     var _overScrollEffect: RefreshEffectConfig = RefreshEffectConfig()
 
@@ -357,12 +385,14 @@ class LinkageHeaderBehavior(
     fun onHeaderOverScroll(target: View?, dy: Int) {
         var isOverScroll = false
 
-        if (enableTopOverScroll || enableRefresh) {
-            isOverScroll = behaviorScrollY >= maxScroll
-                    && dy > 0
-                    && !headerScrollView.topCanScroll()
-                    && !footerScrollView.topCanScroll()
-                    && !stickyScrollView.topCanScroll()
+        if (!isOverScroll) {
+            if (enableTopOverScroll || enableRefresh) {
+                isOverScroll = behaviorScrollY >= maxScroll
+                        && dy > 0
+                        && !headerScrollView.topCanScroll()
+                        && !footerScrollView.topCanScroll()
+                        && !stickyScrollView.topCanScroll()
+            }
         }
 
         if (!isOverScroll) {
@@ -431,15 +461,15 @@ class LinkageHeaderBehavior(
     /**over归位*/
     fun resetOverScroll() {
         if (!isTouchHold && childView != null) {
-            if ((enableTopOverScroll || enableBottomOverScroll)) {
+            if (enableRefresh) {
+                refreshBehaviorConfig?.onContentStopScroll(this)
+            } else if ((enableTopOverScroll || enableBottomOverScroll)) {
                 //L.e("恢复位置.")
                 if (behaviorScrollY > maxScroll) {
                     startScrollTo(0, 0)
                 } else if (minScroll in (behaviorScrollY + 1) until maxScroll) {
                     startScrollTo(0, minScroll)
                 }
-
-                refreshBehaviorConfig?.onContentStopScroll(this)
             }
             resetScrollStickyHold()
         }
@@ -505,7 +535,12 @@ class LinkageHeaderBehavior(
             _linkageFlingScrollView == null &&
             absY > absX && absY > minFlingVelocity
         ) {
-            val delegateScrollView: NestedScrollingChild? = footerScrollView ?: headerScrollView
+            val delegateScrollView: NestedScrollingChild? =
+                if (footerScrollView?.topCanScroll() == true || footerScrollView?.bottomCanScroll() == true) {
+                    footerScrollView
+                } else {
+                    headerScrollView
+                }
             delegateScrollView?.apply {
                 setFlingView(this)
                 val vY = -velocityY.toInt()

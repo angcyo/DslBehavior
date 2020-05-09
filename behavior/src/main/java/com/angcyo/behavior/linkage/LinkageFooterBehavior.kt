@@ -26,16 +26,22 @@ class LinkageFooterBehavior(
         dependency: View
     ): Boolean {
         super.layoutDependsOn(parent, child, dependency)
-        footerView = child
-
         //用来实现位置跟随
-        val dependencyBehavior = dependency.behavior()
-        return if (dependencyBehavior is LinkageHeaderBehavior || dependencyBehavior is LinkageStickyBehavior) {
-            dependsView = dependency
-            true
-        } else {
-            false
+
+        if (stickyView != null) {
+            if (stickyView == dependency) {
+                dependsView = dependency
+                return true
+            }
+            return false
         }
+
+        if (headerView != null && headerView == dependency) {
+            dependsView = dependency
+            return true
+        }
+
+        return false
     }
 
     override fun onDependentViewChanged(

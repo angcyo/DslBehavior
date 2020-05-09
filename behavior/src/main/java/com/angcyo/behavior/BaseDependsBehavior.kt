@@ -56,6 +56,12 @@ abstract class BaseDependsBehavior<T : View>(
         return super.onDependentViewChanged(parent, child, dependency)
     }
 
+    @CallSuper
+    override fun onDependentViewRemoved(parent: CoordinatorLayout, child: T, dependency: View) {
+        super.onDependentViewRemoved(parent, child, dependency)
+        dependsView = null
+    }
+
     fun postInvalidate() {
         parentLayout?.postInvalidate()
     }

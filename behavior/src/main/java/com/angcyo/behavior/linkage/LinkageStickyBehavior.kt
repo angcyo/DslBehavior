@@ -25,8 +25,6 @@ class LinkageStickyBehavior(
         dependency: View
     ): Boolean {
         super.layoutDependsOn(parent, child, dependency)
-        stickyView = child
-
         val dependencyBehavior = dependency.behavior()
         return if (dependencyBehavior is LinkageHeaderBehavior) {
             dependsView = dependency

@@ -59,10 +59,14 @@ abstract class BaseLinkageBehavior(
     ): Boolean {
         val result = super.layoutDependsOn(parent, child, dependency)
 
-        when (dependency.behavior()) {
-            is LinkageHeaderBehavior -> headerView = dependency
-            is LinkageFooterBehavior -> footerView = dependency
-            is LinkageStickyBehavior -> stickyView = dependency
+        for (i in 0 until parent.childCount) {
+            val childView = parent.getChildAt(i)
+            val targetView = if (childView.visibility == View.VISIBLE) childView else null
+            when (childView.behavior()) {
+                is LinkageHeaderBehavior -> headerView = targetView
+                is LinkageFooterBehavior -> footerView = targetView
+                is LinkageStickyBehavior -> stickyView = targetView
+            }
         }
 
         return result
@@ -202,11 +206,15 @@ abstract class BaseLinkageBehavior(
                     //L.i("header fling $velocityY")
                     //来自Header的Fling, 那么要传给Footer
                     footerRV?.apply {
-                        if (_linkageFlingScrollView?.get() == this
-                            || dyUnconsumed < 0 /*header fling到顶后, 不需要传给footer*/) {
-                            return
+                        if (topCanScroll() || bottomCanScroll()) {
+                            if (_linkageFlingScrollView?.get() == this
+                                || dyUnconsumed < 0 /*header fling到顶后, 不需要传给footer*/) {
+                                return
+                            }
+                            scrollTarget = this
+                        } else {
+                            scrollTarget = headerRV
                         }
-                        scrollTarget = this
                     }
                 }
                 else -> {
