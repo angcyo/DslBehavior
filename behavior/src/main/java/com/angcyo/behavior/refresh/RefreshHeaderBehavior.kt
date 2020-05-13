@@ -117,11 +117,13 @@ open class RefreshHeaderBehavior(context: Context, attributeSet: AttributeSet? =
                 //可以提示一些UI, 然后再[Scroll]
                 if (!contentBehavior.isTouchHold) {
                     contentBehavior.startScrollTo(resetScrollX, resetScrollY)
+                    _refreshBehaviorStatus = STATUS_NORMAL
                 }
             }
             else -> {
                 if (!contentBehavior.isTouchHold) {
                     contentBehavior.startScrollTo(resetScrollX, resetScrollY)
+                    _refreshBehaviorStatus = STATUS_NORMAL
                 }
             }
         }
