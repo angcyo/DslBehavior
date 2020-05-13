@@ -81,7 +81,7 @@ allprojects {
 
 ```kotlin
 dependencies {
-    implementation 'com.github.angcyo:DslBehavior:1.0.1'
+    implementation 'com.github.angcyo:DslBehavior:1.0.2'
 }
 ```
 
