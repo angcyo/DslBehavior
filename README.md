@@ -40,7 +40,7 @@ Demo效果列表 | 上下回弹
 
 ## Gif效果
 
-上下回调 | 下拉刷新
+上下回弹 | 下拉刷新
 ---|---
 ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g1.gif) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g2.gif) 
 
