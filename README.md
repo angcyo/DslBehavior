@@ -20,41 +20,41 @@ demo场景:
 
 Demo效果列表 | 上下回弹
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/demo.jpg) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/effect.jpg) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/demo.jpg) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/effect.jpg) 
 
 智能阴影线 | 联动中效果
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/effect_line.jpg) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/effect2.jpg) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/effect_line.jpg) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/effect2.jpg) 
 
 标题栏渐变 | 联动中效果
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/gradient.jpg) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/gradient2.jpg) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/gradient.jpg) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/gradient2.jpg) 
 
 下拉刷新 | 联动中效果
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/refresh.jpg) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/refresh2.jpg) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/refresh.jpg) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/refresh2.jpg) 
 
 背景缩放 | 联动中效果
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/scale.jpg) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/scale2.jpg) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/scale.jpg) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/scale2.jpg) 
 
 ## Gif效果
 
 上下回弹 | 下拉刷新
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g1.gif) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g2.gif) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/g1.gif) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/g2.gif) 
 
 智能提示线 | 标题栏渐变
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g3.gif) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g4.gif) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/g3.gif) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/g4.gif) 
 
 背景放大 | 联动中效果
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g5.gif) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g7.gif) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/g5.gif) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/g7.gif) 
 
 联动中标题栏渐变 | `酷安`效果
 ---|---
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g5.gif) | ![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/g8.gif) 
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/g5.gif) | ![](https://gitee.com/angcyo/DslBehavior/raw/master/png/g8.gif) 
 
 # 使用文档
 
@@ -62,7 +62,7 @@ Demo效果列表 | 上下回弹
 
 ## 扫码下载体验
 
-![](https://raw.githubusercontent.com/angcyo/DslBehavior/master/png/code.png)
+![](https://gitee.com/angcyo/DslBehavior/raw/master/png/code.png)
 
 # 使用`JitPack`的方式, 引入库.
 
